@@ -199,6 +199,8 @@ docs/crowdin.py
 __pycache__
 .vs/*
     .vscode/*
+
+nextlabsIA
 test.py
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,python
