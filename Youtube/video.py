@@ -1,16 +1,14 @@
 # https://developers.google.com/youtube/v3/docs/videos/
-from .youtube import api
-
-class video(api):
+class video():
     """
     The video class handles the methods to fetch data from the YouTube Data API related to a video
 
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
-        super().__init__(key)
-    
+    def __init__(self):
+        pass
+
     def get(self, id, maxResults= 10, **kwargs):
         '''
         Given a video `id` returns metrics (views, likes, comments) and metadata (description, category) as a dictionary.
@@ -32,14 +30,13 @@ class video(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "contentDetails, id, localizations, snippet, statistics, status, topicDetails",
             "maxResults": maxResults
         }
         params.update(kwargs)
         
-        return self.request("video", params)
+        return ("video", params)
 
     def most_popular(self, regionCode, videoCategoryId, **kwargs):
         '''
@@ -64,14 +61,13 @@ class video(api):
                 rtype: dict
         '''
         params={
-            "key": self.key,
             "chart": "mostPopular",
             "regionCode": regionCode,
             "videoCategoryId": videoCategoryId
         }
         params.update(kwargs)
 
-        return self.request("video", params)
+        return ("video", params)
 
     def get_categories_by_region(self, regionCode="IN"):
         '''
@@ -87,12 +83,11 @@ class video(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "regionCode": regionCode,
             "part": "id, snippet"
         }
 
-        return self.request_test("video_category", params)
+        return ("video_category", params)
 
     def get_category_by_id(self, id):
         '''
@@ -108,9 +103,8 @@ class video(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "id, snippet"
         }
 
-        return self.request_test("video_category", params)
+        return ("video_category", params)

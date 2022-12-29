@@ -1,17 +1,15 @@
 # https://developers.google.com/youtube/v3/docs/commentThreads
 # https://developers.google.com/youtube/v3/docs/comments
-from .youtube import api
-
-class comment(api):
+class comment():
     """
     The comment class handles the methods to fetch data from the YouTube Data API related to comments
 
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
-        super().__init__(key)
-    
+    def __init__(self):
+        pass
+
     def get_for_video(self, id, maxResults=50, **kwargs):
         '''
         Given a video `id` returns top level comments on the video.
@@ -37,14 +35,13 @@ class comment(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "videoId": id,
             "part": "snippet, replies",
             "maxResults": maxResults
         }
         params.update(kwargs)
 
-        return self.request("comment_thread", params)
+        return ("comment_thread", params)
 
     #not working
     def get_for_channel(self, id, maxResults=5, **kwargs):
@@ -72,14 +69,13 @@ class comment(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "channelId": id,
             "part": "snippet, replies",
             "maxResults": maxResults
         }
         params.update(kwargs)
         
-        return self.request("comment_thread", params)
+        return ("comment_thread", params)
 
     def get_related_to_channel(self, id, maxResults=50, **kwargs):
         '''
@@ -106,14 +102,13 @@ class comment(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "allThreadsRelatedToChannelId": id,
             "part": "snippet, replies",
             "maxResults": maxResults
         }
         params.update(kwargs)
         
-        return self.request("comment_thread", params)
+        return ("comment_thread", params)
 
     def getr(self, id, **kwargs):
         '''
@@ -134,13 +129,12 @@ class comment(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "snippet, replies"
         }
         params.update(kwargs)
         
-        return self.request("comment_thread", params)
+        return ("comment_thread", params)
 
     def get(self, id, **kwargs):
         '''
@@ -161,10 +155,9 @@ class comment(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "snippet"
         }
         params.update(kwargs)
 
-        return self.request_test("comment", params)
+        return ("comment", params)

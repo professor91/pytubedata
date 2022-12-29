@@ -4,7 +4,7 @@ from urllib import request as req
 
 from .endpoints import ENDPOINTS
 
-class api():
+class client():
     """
     The Youtube Data API handles the keys and methods to access data from the YouTube Data API
 

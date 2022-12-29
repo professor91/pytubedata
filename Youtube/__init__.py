@@ -3,7 +3,7 @@ Pytubedata.py
 
 Simple Youtube Data API Wrapper written in pythn
 """
-from .youtube import api
+from .client import client
 from .endpoints import ENDPOINTS
 
 # Import all libs

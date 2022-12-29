@@ -1,16 +1,14 @@
 # https://developers.google.com/youtube/v3/docs/channels
-from .youtube import api
-
-class channel(api):
+class channel():
     """
     The channel class handles the methods to fetch data from the YouTube Data API related to a channel
 
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
-        super().__init__(key)
-    
+    def __init__(self):
+        pass
+
     def get(self, id):
         '''
         Given a channel `id` returns metrics (views, subscribersCount, videoCount) and metadata (description, category) as a dictionary.
@@ -25,12 +23,11 @@ class channel(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "snippet, statistics, topicDetails, brandingSettings, contentDetails, contentOwnerDetails"
         }
         
-        return self.request("channel", params)
+        return ("channel", params)
 
     def get_all_sections(self, id):
         '''
@@ -46,12 +43,11 @@ class channel(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "channelId": id,
             "part": "snippet, contentDetails"
         }
 
-        return self.request("channel_section", params)
+        return ("channel_section", params)
 
     def get_section(self, id):
         '''
@@ -67,9 +63,8 @@ class channel(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "snippet, contentDetails"
         }
 
-        return self.request("channel_section", params)
+        return ("channel_section", params)

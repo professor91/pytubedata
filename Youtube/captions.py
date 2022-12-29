@@ -1,16 +1,14 @@
 # https://developers.google.com/youtube/v3/docs/captions
-from .youtube import api
-
-class captions(api):
+class captions():
     """
     The captions class handles the methods to fetch captions of a video from the YouTube Data API
 
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
-        super().__init__(key)
-    
+    def __init__(self):
+        pass
+
     def get_of_video(self, id):
         '''
         Given a video `id` returns the metadata of all the captions of that video.
@@ -25,9 +23,8 @@ class captions(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "videoId": id,
             "part": "snippet",
         }
 
-        return self.request_test("caption", params)
+        return ("caption", params)

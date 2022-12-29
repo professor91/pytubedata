@@ -1,7 +1,5 @@
 # https://developers.google.com/youtube/v3/docs/search
-from .youtube import api
-
-class search(api):
+class search():
     """
     The search class handles the methods to make search queries on Youtube using YouTube Data API
 
@@ -9,7 +7,7 @@ class search(api):
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
     def __init__(self, key):
-        super().__init__(key)
+        pass
 
     def get(self, _query, maxResults=20, **kwargs):
         '''
@@ -29,7 +27,6 @@ class search(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "q": _query,
             "part": "snippet",
             "type": "video",
@@ -37,4 +34,4 @@ class search(api):
         }
         params.update(kwargs)
         
-        return self.request("search", params)
+        return ("search", params)

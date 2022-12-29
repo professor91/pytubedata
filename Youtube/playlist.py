@@ -1,8 +1,6 @@
 # https://developers.google.com/youtube/v3/docs/playlistItems
 # https://developers.google.com/youtube/v3/docs/playlists
-from .youtube import api
-
-class playlist(api):
+class playlist():
     """
     The playlist class handles the methods to fetch data from the YouTube Data API related to a playlist
 
@@ -10,7 +8,7 @@ class playlist(api):
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
     def __init__(self, key):
-        super().__init__(key)
+        pass
 
     def get(self, id):
         '''
@@ -26,12 +24,11 @@ class playlist(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "id": id,
             "part": "snippet, contentDetails, id, localizations, status"
         }
 
-        return self.request("playlist", params)
+        return ("playlist", params)
     
     def get_for_channel(self, channelId, maxResult=50):
         '''
@@ -47,13 +44,12 @@ class playlist(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "part": "snippet",
             "channelId": channelId,
             "maxResult": maxResult
         }
         
-        return self.request("playlist", params)
+        return ("playlist", params)
 
     def get_videos(self, id, maxResult=50):
         '''
@@ -69,10 +65,9 @@ class playlist(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "playlistId": id,
             "part": "snippet, contentDetails, id, status",
             "maxResult": maxResult
         }
         
-        return self.request("playlist_item", params)
+        return ("playlist_item", params)

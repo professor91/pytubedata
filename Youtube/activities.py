@@ -1,15 +1,13 @@
 # https://developers.google.com/youtube/v3/docs/activities
-from .youtube import api
-
-class activities(api):
+class activities():
     """
     The activities class handles the methods to fetch all the activities happened on a channel
 
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
-        super().__init__(key)
+    def __init__(self):
+        pass
 
     def get_for_channel(self, id, maxResults=50, **kwargs):
         '''
@@ -35,11 +33,10 @@ class activities(api):
                 rtype: dict
         '''
         params= {
-            "key": self.key,
             "channelId": id,
             "part": "snippet, contentDetails",
             "maxResults": maxResults,
         }
         params.update(kwargs)
         
-        return self.request_test("activity", params)
+        return ("activity", params)
