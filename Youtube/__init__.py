@@ -14,17 +14,3 @@ from .comments import comment
 from .playlist import playlist
 from .search import search
 from .video import video
-
-# Class client
-class Client():
-
-    def __init__(self, key):
-        self.key = key
-
-        self.activities= activities(self.key)
-        self.captions= captions(key)
-        self.channel= channel(key)
-        self.comment= comment(key)
-        self.playlist= playlist(key)
-        self.search= search(key)
-        self.video= video(key)
