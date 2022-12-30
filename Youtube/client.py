@@ -2,7 +2,7 @@ import requests
 from urllib import parse
 from urllib import request as req
 
-from .endpoints import ENDPOINTS
+from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
 from .activities import activities
 from .captions import captions
@@ -32,7 +32,7 @@ class client():
     @classmethod
     def get_endpoint_params(cls, method_name: str, **kwargs):
 
-        endpoint_content: dict= ENDPOINTS[method_name]
+        endpoint_content: dict= FUNCTION_CLASS_METHOD_MAP[method_name]
         endpoint_class: object= eval(endpoint_content.get('class'))()
         endpoint_method: str= endpoint_content.get('class_method')
 
@@ -45,7 +45,7 @@ class client():
         Given endpoint of API and params returns the request response in json format.
 
         params: required
-            endpoint: from the given dictionary of endpoints in endpoints.py
+            endpoint: from the given dictionary of endpoints in class_mapper.py
             type: str or list of str
 
             params: given when the function is called
@@ -70,7 +70,7 @@ class client():
         Given endpoint of API and params returns the request response in text format.
 
         params: required
-            endpoint: from the given dictionary of endpoints in endpoints.py
+            endpoint: from the given dictionary of endpoints in class_mapper.py
             type: str or list of str
 
             params: given when the function is called
@@ -79,7 +79,7 @@ class client():
         returns the request response in text format
                 rtype: text
         '''
-        res= requests.get(self.base_url + ENDPOINTS[endpoint] + "?" + parse.urlencode(params))
+        res= requests.get(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params))
         
         return res.text
     
@@ -88,7 +88,7 @@ class client():
         Given endpoint of API and params returns the request's parsed url.
 
         params: required
-            endpoint: from the given dictionary of endpoints in endpoints.py
+            endpoint: from the given dictionary of endpoints in class_mapper.py
             type: str or list of str
 
             params: given when the function is called
@@ -97,4 +97,4 @@ class client():
         returns the request's parsed url
                 rtype: str
         '''
-        return req.Request(self.base_url + ENDPOINTS[endpoint] + "?" + parse.urlencode(params)).get_full_url()
+        return req.Request(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params)).get_full_url()

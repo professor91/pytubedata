@@ -4,7 +4,7 @@ Pytubedata.py
 Simple Youtube Data API Wrapper written in pythn
 """
 from .client import client
-from .endpoints import ENDPOINTS
+from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
 # Import all libs
 from .activities import activities
