@@ -1,6 +1,8 @@
 import requests
 from urllib import parse
 from urllib import request as req
+from pathlib import Path
+import os
 
 from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
@@ -12,6 +14,7 @@ from .playlist import playlist
 from .search import search
 from .video import video
 
+
 class client():
     """
     The Youtube Data API handles the keys and methods to access data from the YouTube Data API
@@ -19,26 +22,47 @@ class client():
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
+
+    def __init__(self):
+        self.base_url = "https://www.googleapis.com/youtube/v3"
+        self.key= self._get_secret_key()
+
+        if self.key:
+            print('Client is ready')
+
+    def _get_secret_key(self):
+        ROOT_DIR: Path = Path(os.path.dirname(os.path.abspath(__file__)))
+        print(ROOT_DIR)
+        SECRET_FILE: Path = ROOT_DIR.parent / 'secret.yml'
+
+        key: str = SECRET_FILE.read_text()
+
         if not key:
             raise ValueError("Google API key is required please visit http://code.google.com/apis/console")
-        
-        # if True and self.verify_key(params):
-        #     raise ValueError('The API Key is invalid')
 
-        self.key= key
-        self.base_url= "https://www.googleapis.com/youtube/v3"
+        if self._verify_key(key):
+            raise ValueError('The API Key is invalid')
+        else:
+            return key
+
+    def _verify_key(self, key: str):
+
+        res = requests.get(self.base_url + 'search' + '?' + 'key' + key + 'part' + 'snippet')
+
+        if res.status_code != 200:
+            return False
+        else:
+            return True
 
     @classmethod
     def get_endpoint_params(cls, method_name: str, **kwargs):
-
-        endpoint_content: dict= FUNCTION_CLASS_METHOD_MAP[method_name]
-        endpoint_class: object= eval(endpoint_content.get('class'))()
-        endpoint_method: str= endpoint_content.get('class_method')
+        endpoint_content: dict = FUNCTION_CLASS_METHOD_MAP[method_name]
+        endpoint_class: object = eval(endpoint_content.get('class'))()
+        endpoint_method: str = endpoint_content.get('class_method')
 
         return getattr(
-                        endpoint_class,
-                        endpoint_method)(**kwargs)
+            endpoint_class,
+            endpoint_method)(**kwargs)
 
     def request(self, method_name, **kwargs):
         '''
@@ -79,10 +103,10 @@ class client():
         returns the request response in text format
                 rtype: text
         '''
-        res= requests.get(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params))
-        
+        res = requests.get(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params))
+
         return res.text
-    
+
     def request_url(self, endpoint, params):
         '''
         Given endpoint of API and params returns the request's parsed url.
@@ -97,4 +121,5 @@ class client():
         returns the request's parsed url
                 rtype: str
         '''
-        return req.Request(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params)).get_full_url()
+        return req.Request(
+            self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params)).get_full_url()
