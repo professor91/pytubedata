@@ -7,7 +7,7 @@ class search():
     params: required
         key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
     """
-    def __init__(self, key):
+    def __init__(self):
         pass
 
     def get(self, **kwargs):
