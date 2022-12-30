@@ -1,6 +1,9 @@
 ENDPOINTS= {
     # Public API Endpoints
-    "activity"          :   "/activities",
+    "activity_for_channel":   { 'endpoint': "/activities",
+                                'class': 'activities',
+                                'class_method': 'get_for_channel'
+                                },
     "caption"           :   "/captions",
     "channel"           :   "/channels",
     "channel_section"   :   "/channelSections",
