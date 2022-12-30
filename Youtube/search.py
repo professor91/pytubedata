@@ -1,4 +1,5 @@
 # https://developers.google.com/youtube/v3/docs/search
+
 class search():
     """
     The search class handles the methods to make search queries on Youtube using YouTube Data API
@@ -9,7 +10,7 @@ class search():
     def __init__(self, key):
         pass
 
-    def get(self, _query, maxResults=20, **kwargs):
+    def get(self, **kwargs):
         '''
         Given a `query` returns information about a YouTube video, channel, or playlist that matches the search parameters.
 
@@ -26,12 +27,16 @@ class search():
         returns metadata from the inputted query ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('query'):
+            raise KeyError("query not given")
+
         params= {
-            "q": _query,
+            "q": kwargs.get('query'),
             "part": "snippet",
             "type": "video",
-            "maxResults": maxResults
         }
+        kwargs.pop('query')
         params.update(kwargs)
         
-        return ("search", params)
+        return ("/search", params)

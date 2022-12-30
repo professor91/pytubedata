@@ -1,5 +1,6 @@
 # https://developers.google.com/youtube/v3/docs/playlistItems
 # https://developers.google.com/youtube/v3/docs/playlists
+
 class playlist():
     """
     The playlist class handles the methods to fetch data from the YouTube Data API related to a playlist
@@ -10,7 +11,7 @@ class playlist():
     def __init__(self, key):
         pass
 
-    def get(self, id):
+    def get(self, **kwargs):
         '''
         Given playlist `id`(s) returns metadata (id, title, channelId, videoCount).
 
@@ -23,14 +24,18 @@ class playlist():
         returns metadata from the inputted playlist ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "snippet, contentDetails, id, localizations, status"
         }
 
-        return ("playlist", params)
+        return ("/playlists", params)
     
-    def get_for_channel(self, channelId, maxResult=50):
+    def get_for_channel(self, **kwargs):
         '''
         Given a `channelId` returns a list of playlist IDs that `channelId` created.
 
@@ -43,15 +48,18 @@ class playlist():
         returns a list of playlist IDs that `channelId` created
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
+            "channelId": kwargs.get('id'),
             "part": "snippet",
-            "channelId": channelId,
-            "maxResult": maxResult
         }
         
-        return ("playlist", params)
+        return ("/playlists", params)
 
-    def get_videos(self, id, maxResult=50):
+    def get_videos(self, **kwargs):
         '''
         Given a `channelId` returns a list of playlist IDs that `channelId` created.
 
@@ -64,10 +72,15 @@ class playlist():
         returns a list of playlist IDs that `channelId` created
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "playlistId": id,
+            "playlistId": kwargs.get('id'),
             "part": "snippet, contentDetails, id, status",
-            "maxResult": maxResult
         }
+        kwargs.pop('id')
+        params.update(kwargs)
         
-        return ("playlist_item", params)
+        return ("/playlistItems", params)

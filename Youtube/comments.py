@@ -1,5 +1,6 @@
 # https://developers.google.com/youtube/v3/docs/commentThreads
 # https://developers.google.com/youtube/v3/docs/comments
+
 class comment():
     """
     The comment class handles the methods to fetch data from the YouTube Data API related to comments
@@ -10,7 +11,7 @@ class comment():
     def __init__(self):
         pass
 
-    def get_for_video(self, id, maxResults=50, **kwargs):
+    def get_for_video(self, **kwargs):
         '''
         Given a video `id` returns top level comments on the video.
 
@@ -34,17 +35,21 @@ class comment():
         returns top level comments on the inputted videos `id`.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "videoId": id,
+            "videoId": kwargs.get('id'),
             "part": "snippet, replies",
-            "maxResults": maxResults
         }
+        kwargs.pop('id')
         params.update(kwargs)
 
-        return ("comment_thread", params)
+        return ("/commentThreads", params)
 
     #not working
-    def get_for_channel(self, id, maxResults=5, **kwargs):
+    def get_for_channel(self, **kwargs):
         '''
         Given a channel `id` returns comment threads containing comments about the specified channel (excluding comments left on videos that the channel uploaded).
 
@@ -68,16 +73,20 @@ class comment():
         returns top level comments related to the inputted channel `id'.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "channelId": id,
-            "part": "snippet, replies",
-            "maxResults": maxResults
+            "channelId": kwargs.get('id'),
+            "part": "snippet"
         }
+        kwargs.pop('id')
         params.update(kwargs)
         
-        return ("comment_thread", params)
+        return ("/commentThreads", params)
 
-    def get_related_to_channel(self, id, maxResults=50, **kwargs):
+    def get_related_to_channel(self, **kwargs):
         '''
         Given a channel `id` returns comment threads associated with the channel(include comments about the channel or about the channel's videos).
 
@@ -101,16 +110,20 @@ class comment():
         returns top level comments related to the inputted channel `id`.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "allThreadsRelatedToChannelId": id,
+            "allThreadsRelatedToChannelId": kwargs.get('id'),
             "part": "snippet, replies",
-            "maxResults": maxResults
         }
+        kwargs.pop('id')
         params.update(kwargs)
         
-        return ("comment_thread", params)
+        return ("/commentThreads", params)
 
-    def getr(self, id, **kwargs):
+    def getr(self, **kwargs):
         '''
         Given a commend `id` returns the metadata of that comment with replies.
 
@@ -128,15 +141,20 @@ class comment():
         returns metadata of the comment `id`.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "snippet, replies"
         }
+        kwargs.pop('id')
         params.update(kwargs)
         
-        return ("comment_thread", params)
+        return ("/commentThreads", params)
 
-    def get(self, id, **kwargs):
+    def get(self, **kwargs):
         '''
         Given a commend `id` returns the metadata of that comment without replies.
 
@@ -154,10 +172,15 @@ class comment():
         returns metadata of the comment `id`.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "snippet"
         }
+        kwargs.pop('id')
         params.update(kwargs)
 
-        return ("comment", params)
+        return ("/comment", params)

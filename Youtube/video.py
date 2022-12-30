@@ -1,4 +1,5 @@
 # https://developers.google.com/youtube/v3/docs/videos/
+
 class video():
     """
     The video class handles the methods to fetch data from the YouTube Data API related to a video
@@ -9,7 +10,7 @@ class video():
     def __init__(self):
         pass
 
-    def get(self, id, maxResults= 10, **kwargs):
+    def get(self, **kwargs):
         '''
         Given a video `id` returns metrics (views, likes, comments) and metadata (description, category) as a dictionary.
 
@@ -29,16 +30,20 @@ class video():
         returns metadata from the inputted video ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "contentDetails, id, localizations, snippet, statistics, status, topicDetails",
-            "maxResults": maxResults
         }
+        kwargs.pop('id')
         params.update(kwargs)
         
-        return ("video", params)
+        return ("/videos", params)
 
-    def most_popular(self, regionCode, videoCategoryId, **kwargs):
+    def most_popular(self, **kwargs):
         '''
         Given a `regionCode` and `videoCategoryId` returns most popular videos for the specifies region and video category.
 
@@ -60,16 +65,25 @@ class video():
         returns metadata from the inputted video ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('regionCode'):
+            raise KeyError("regionCode not given")
+
+        if not kwargs.get('videoCategoryId'):
+            raise KeyError("videoCategoryId not given")
+
         params={
             "chart": "mostPopular",
-            "regionCode": regionCode,
-            "videoCategoryId": videoCategoryId
+            "regionCode": kwargs.get('regionCode'),
+            "videoCategoryId": kwargs.get('videoCategoryId')
         }
+        kwargs.pop('regionCode')
+        kwargs.pop('videoCategoryId')
         params.update(kwargs)
 
-        return ("video", params)
+        return ("/videos", params)
 
-    def get_categories_by_region(self, regionCode="IN"):
+    def get_categories_by_region(self, **kwargs):
         '''
         Given a 'regionCode' returns video category that has been or could be associated with uploaded videos.
 
@@ -82,14 +96,21 @@ class video():
         returns video categories of inputted `regionCode`
                 rtype: dict
         '''
+
+        if not kwargs.get('regionCode'):
+            raise KeyError("regionCode not given")
+
+
         params= {
-            "regionCode": regionCode,
+            "regionCode": kwargs.get('regionCode'),
             "part": "id, snippet"
         }
+        kwargs.pop('regionCode')
+        params.update(kwargs)
 
-        return ("video_category", params)
+        return ("/videoCategory", params)
 
-    def get_category_by_id(self, id):
+    def get_category_by_id(self, **kwargs):
         '''
         Given a videoCategory `id` returns metadata of the video category.
 
@@ -102,9 +123,15 @@ class video():
         returns metadata of the inputted video category `id`
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "id, snippet"
         }
+        kwargs.pop('id')
+        params.update(kwargs)
 
-        return ("video_category", params)
+        return ("/videoCategory", params)

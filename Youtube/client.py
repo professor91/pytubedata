@@ -5,6 +5,12 @@ from urllib import request as req
 from .endpoints import ENDPOINTS
 
 from .activities import activities
+from .captions import captions
+from .channel import channel
+from .comments import comment
+from .playlist import playlist
+from .search import search
+from .video import video
 
 class client():
     """
@@ -49,10 +55,10 @@ class client():
                 rtype: dict
         '''
 
-        params = self.get_endpoint_params(method_name, **kwargs)[1]
+        endpoint, params = self.get_endpoint_params(method_name, **kwargs)
         params['key'] = self.key
 
-        res = requests.get(self.base_url + ENDPOINTS[method_name]['endpoint'] + "?" + parse.urlencode(params))
+        res = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
 
         return {
             "statusCode": res.status_code,

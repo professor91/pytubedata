@@ -1,4 +1,5 @@
 # https://developers.google.com/youtube/v3/docs/channels
+
 class channel():
     """
     The channel class handles the methods to fetch data from the YouTube Data API related to a channel
@@ -9,7 +10,7 @@ class channel():
     def __init__(self):
         pass
 
-    def get(self, id):
+    def get_channel(self, **kwargs):
         '''
         Given a channel `id` returns metrics (views, subscribersCount, videoCount) and metadata (description, category) as a dictionary.
 
@@ -22,14 +23,18 @@ class channel():
         returns metadata from the inputted channel ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "snippet, statistics, topicDetails, brandingSettings, contentDetails, contentOwnerDetails"
         }
-        
-        return ("channel", params)
+        kwargs.pop('id')
+        return ("/channels", params)
 
-    def get_all_sections(self, id):
+    def get_all_sections(self, **kwargs):
         '''
         Given a channel `id` returns all sections of the channel.
 
@@ -42,14 +47,20 @@ class channel():
         returns sections of the inputted channel ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "channelId": id,
+            "channelId": kwargs.get('id'),
             "part": "snippet, contentDetails"
         }
+        kwargs.pop('id')
+        params.update(kwargs)
 
-        return ("channel_section", params)
+        return ("/channelSections", params)
 
-    def get_section(self, id):
+    def get_section(self, **kwargs):
         '''
         Given a channelSection `id` return metadata for the section.
 
@@ -62,9 +73,15 @@ class channel():
         returns metadata of the inputted channelSections ``id``s.
                 rtype: dict
         '''
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
         params= {
-            "id": id,
+            "id": kwargs.get('id'),
             "part": "snippet, contentDetails"
         }
+        kwargs.pop('id')
+        params.update(kwargs)
 
-        return ("channel_section", params)
+        return ("/channelSections", params)

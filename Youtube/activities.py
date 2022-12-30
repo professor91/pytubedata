@@ -1,4 +1,5 @@
 # https://developers.google.com/youtube/v3/docs/activities
+
 class activities():
     """
     The activities class handles the methods to fetch all the activities happened on a channel
@@ -9,7 +10,8 @@ class activities():
     def __init__(self):
         pass
 
-    def get_for_channel(self, id, maxResults=50, **kwargs):
+    @classmethod
+    def get_for_channel(cls, **kwargs):
         '''
         Given a channel `id` returns the metadata of all actitivies happend on the channel.
 
@@ -32,11 +34,15 @@ class activities():
         returns metadata of activities from the inputted channel ``id``s.
                 rtype: dict
         '''
-        params= {
-            "channelId": id,
+
+        if not kwargs.get('id'):
+            raise KeyError("id not given")
+
+        params = {
+            "channelId": kwargs.get('id'),
             "part": "snippet, contentDetails",
-            "maxResults": maxResults,
         }
+        kwargs.pop('id')
         params.update(kwargs)
         
-        return ("activity", params)
+        return ('/activities' ,params)
