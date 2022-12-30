@@ -4,6 +4,8 @@ from urllib import request as req
 
 from .endpoints import ENDPOINTS
 
+from .activities import activities
+
 class client():
     """
     The Youtube Data API handles the keys and methods to access data from the YouTube Data API
@@ -21,7 +23,18 @@ class client():
         self.key= key
         self.base_url= "https://www.googleapis.com/youtube/v3"
 
-    def request(self, endpoint, params):
+    @classmethod
+    def get_endpoint_params(cls, method_name: str, **kwargs):
+
+        endpoint_content: dict= ENDPOINTS[method_name]
+        endpoint_class: object= eval(endpoint_content.get('class'))()
+        endpoint_method: str= endpoint_content.get('class_method')
+
+        return getattr(
+                        endpoint_class,
+                        endpoint_method)(**kwargs)
+
+    def request(self, method_name, **kwargs):
         '''
         Given endpoint of API and params returns the request response in json format.
 
@@ -35,9 +48,12 @@ class client():
         returns the request response in text format
                 rtype: dict
         '''
-        res= requests.get(self.base_url + ENDPOINTS[endpoint] + "?" + parse.urlencode(params))
-        
-        
+
+        params = self.get_endpoint_params(method_name, **kwargs)[1]
+        params['key'] = self.key
+
+        res = requests.get(self.base_url + ENDPOINTS[method_name]['endpoint'] + "?" + parse.urlencode(params))
+
         return {
             "statusCode": res.status_code,
             "data": res.json()
@@ -76,4 +92,3 @@ class client():
                 rtype: str
         '''
         return req.Request(self.base_url + ENDPOINTS[endpoint] + "?" + parse.urlencode(params)).get_full_url()
-    
