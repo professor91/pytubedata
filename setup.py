@@ -8,7 +8,7 @@ with open ("README.md", "r") as rf:
 
 setup(
     name="pytubedata",
-    version="1.0.0",
+    version="1.0.2",
     description="A simple wrapper for YouTube Data API v3 written in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
