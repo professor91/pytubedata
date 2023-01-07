@@ -2,7 +2,6 @@ import requests
 from urllib import parse
 from urllib import request as req
 from pathlib import Path
-import os
 
 from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
@@ -31,9 +30,8 @@ class client():
             print('Client is ready')
 
     def _get_secret_key(self):
-        ROOT_DIR: Path = Path(os.path.dirname(os.path.abspath(__file__)))
-        print(ROOT_DIR)
-        SECRET_FILE: Path = ROOT_DIR.parent / 'secret.yml'
+        CURRENT_WORKING_DIRECTORY: Path = Path().cwd()
+        SECRET_FILE: Path = CURRENT_WORKING_DIRECTORY / 'secret.yml'
 
         key: str = SECRET_FILE.read_text()
 
