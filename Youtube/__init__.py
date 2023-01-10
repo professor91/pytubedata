@@ -7,10 +7,10 @@ from .client import client
 from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
 # Import all libs
-from .activities import activities
-from .captions import captions
-from .channel import channel
-from .comments import comment
-from .playlist import playlist
-from .search import search
-from .video import video
+from .activities import Activities
+from .captions import Captions
+from .channel import Channel
+from .comments import Comment
+from .playlist import Playlist
+from .search import Search
+from .video import Video
