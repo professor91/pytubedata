@@ -5,31 +5,33 @@ from pathlib import Path
 
 from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
-from .activities import activities
-from .captions import captions
-from .channel import channel
-from .comments import comment
-from .playlist import playlist
-from .search import search
-from .video import video
+from .activities import Activities
+from .captions import Captions
+from .channel import Channel
+from .comments import Comment
+from .playlist import Playlist
+from .search import Search
+from .video import Video
 
 
-class client():
+class Client:
     """
-    The Youtube Data API handles the keys and methods to access data from the YouTube Data API
-
-    params: required
-        key- YouTube Data API key. Get a YouTube Data API key here: https://console.cloud.google.com/apis/dashboard
+    The YouTube Data API handles the keys and methods to access data from the YouTube Data API
     """
 
     def __init__(self):
         self.base_url = "https://www.googleapis.com/youtube/v3"
-        self.key= self._get_secret_key()
+        self._key = self._get_secret_key()
 
-        if self.key:
+        if self._key:
             print('Client is ready')
 
-    def _get_secret_key(self):
+    def _get_secret_key(self) -> str:
+        """
+        Reads the key from `secret.yml` file and calls self._verifi_key()
+
+        :return API key from `secret.yml` file:
+        """
         CURRENT_WORKING_DIRECTORY: Path = Path().cwd()
         SECRET_FILE: Path = CURRENT_WORKING_DIRECTORY / 'secret.yml'
 
@@ -43,7 +45,18 @@ class client():
         else:
             return key
 
-    def _verify_key(self, key: str):
+    def _verify_key(self, key: str) -> bool:
+        """
+        Given the YouTube API key, verifies if it's correct
+
+        :param key:
+            :required:
+            desc: YouTube Data API key. Visit http://code.google.com/apis/console to create one
+            :type str:
+
+        :return bool if key is authentic:
+            :rtype str:
+        """
 
         res = requests.get(self.base_url + 'search' + '?' + 'key' + key + 'part' + 'snippet')
 
@@ -53,7 +66,23 @@ class client():
             return True
 
     @classmethod
-    def get_endpoint_params(cls, method_name: str, **kwargs):
+    def get_endpoint_params(cls, method_name: str, **kwargs) -> tuple:
+        """
+        Given the endpoint class and it's functions name, calls the function
+
+        :param method_name:
+            :requred:
+            desc: method name listed in class_mapper.py
+            :type str:
+
+        :param kwargs:
+            :required:
+            desc: parameters values for the request
+            :type dict:
+
+        :return endpoint name and parameters for request:
+            :rtype tuple:
+        """
         endpoint_content: dict = FUNCTION_CLASS_METHOD_MAP[method_name]
         endpoint_class: object = eval(endpoint_content.get('class'))()
         endpoint_method: str = endpoint_content.get('class_method')
@@ -62,23 +91,25 @@ class client():
             endpoint_class,
             endpoint_method)(**kwargs)
 
-    def request(self, method_name, **kwargs):
-        '''
-        Given endpoint of API and params returns the request response in json format.
+    def request(self, method_name: str, **kwargs) -> dict:
+        """
+        Given method name from class_mapper.py and params returns the request response in json format.
 
-        params: required
-            endpoint: from the given dictionary of endpoints in class_mapper.py
-            type: str or list of str
+        :param method_name:
+            :requred:
+            desc: method name listed in class_mapper.py
+            :type str:
 
-            params: given when the function is called
-            type: dict
-        
-        returns the request response in text format
-                rtype: dict
-        '''
+        :param kwargs:
+            :required:
+            desc: parameters values for the request
+            :type dict:
 
+        :return structured response of request:
+            :rtype dict:
+        """
         endpoint, params = self.get_endpoint_params(method_name, **kwargs)
-        params['key'] = self.key
+        params['key'] = self._key
 
         res = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
 

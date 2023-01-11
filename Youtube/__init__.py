@@ -1,9 +1,9 @@
 """
 Pytubedata.py
 
-Simple Youtube Data API Wrapper written in pythn
+Simple YouTube Data API Wrapper written in python
 """
-from .client import client
+from .client import Client
 from .class_mapper import FUNCTION_CLASS_METHOD_MAP
 
 # Import all libs
