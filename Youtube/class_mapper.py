@@ -19,7 +19,7 @@ FUNCTION_CLASS_METHOD_MAP= {
             },
     "channel_all_sections":
         {
-            'class': 'channel',
+            'class': 'Channel',
             'class_method': 'get_all_sections'
         },
     "channel_section":
