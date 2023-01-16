@@ -13,18 +13,20 @@ from .playlist import Playlist
 from .search import Search
 from .video import Video
 
+class Auth:
 
-class Client:
-    """
-    The YouTube Data API handles the keys and methods to access data from the YouTube Data API
-    """
+    __BASE_URL = "https://www.googleapis.com/youtube/v3"
 
     def __init__(self):
-        self.base_url = "https://www.googleapis.com/youtube/v3"
-        self._key = self._get_secret_key()
+        self.__key = self._get_secret_key()
 
-        if self._key:
-            print('Client is ready')
+    @property
+    def base_url(self) -> str:
+        return self.__BASE_URL
+
+    @property
+    def key(self) -> str:
+        return self.__key
 
     def _get_secret_key(self) -> str:
         """
@@ -65,6 +67,17 @@ class Client:
         else:
             return True
 
+class Client(Auth):
+    """
+    The YouTube Data API handles the keys and methods to access data from the YouTube Data API
+    """
+    def __init__(self):
+        super().__init__()
+        self._key = self.key
+
+        if self._key:
+            print('Client is ready')
+
     @classmethod
     def get_endpoint_params(cls, method_name: str, **kwargs) -> tuple:
         """
@@ -91,7 +104,7 @@ class Client:
             endpoint_class,
             endpoint_method)(**kwargs)
 
-    def request(self, method_name: str, **kwargs) -> dict:
+    def request(self, method_name: str, **kwargs) -> requests.Response:
         """
         Given method name from class_mapper.py and params returns the request response in json format.
 
@@ -111,44 +124,4 @@ class Client:
         endpoint, params = self.get_endpoint_params(method_name, **kwargs)
         params['key'] = self._key
 
-        res = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
-
-        return {
-            "statusCode": res.status_code,
-            "data": res.json()
-        }
-
-    def request_test(self, endpoint, params):
-        '''
-        Given endpoint of API and params returns the request response in text format.
-
-        params: required
-            endpoint: from the given dictionary of endpoints in class_mapper.py
-            type: str or list of str
-
-            params: given when the function is called
-            type: dict
-
-        returns the request response in text format
-                rtype: text
-        '''
-        res = requests.get(self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params))
-
-        return res.text
-
-    def request_url(self, endpoint, params):
-        '''
-        Given endpoint of API and params returns the request's parsed url.
-
-        params: required
-            endpoint: from the given dictionary of endpoints in class_mapper.py
-            type: str or list of str
-
-            params: given when the function is called
-            type: dict
-
-        returns the request's parsed url
-                rtype: str
-        '''
-        return req.Request(
-            self.base_url + FUNCTION_CLASS_METHOD_MAP[endpoint] + "?" + parse.urlencode(params)).get_full_url()
+        return requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
