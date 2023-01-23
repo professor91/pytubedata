@@ -1,20 +1,11 @@
 import requests
 from urllib import parse
-from urllib import request as req
 from pathlib import Path
 
-from .class_mapper import FUNCTION_CLASS_METHOD_MAP
+from .api_mapper import API_MAPPER
 
-from .activities import Activities
-from .captions import Captions
-from .channel import Channel
-from .comments import Comment
-from .playlist import Playlist
-from .search import Search
-from .video import Video
 
 class Auth:
-
     __BASE_URL = "https://www.googleapis.com/youtube/v3"
 
     def __init__(self):
@@ -67,10 +58,12 @@ class Auth:
         else:
             return True
 
+
 class Client(Auth):
     """
     The YouTube Data API handles the keys and methods to access data from the YouTube Data API
     """
+
     def __init__(self):
         super().__init__()
         self._key = self.key
@@ -78,50 +71,62 @@ class Client(Auth):
         if self._key:
             print('Client is ready')
 
-    @classmethod
-    def get_endpoint_params(cls, method_name: str, **kwargs) -> tuple:
+    def request(self,
+                method_name: str,
+                id: str = None,
+                max_results: int = None,
+                published_before: str = None,
+                published_after: str = None,
+                region_code: str = None
+                ) -> requests.Response:
         """
-        Given the endpoint class and it's functions name, calls the function
+        Given method name from api_mapper.py and params returns the request response in json format.
 
+        :param region_code:
+        :param published_after:
+        :param published_before:
         :param method_name:
             :requred:
-            desc: method name listed in class_mapper.py
+            desc: method name listed in api_mapper.py
             :type str:
 
-        :param kwargs:
-            :required:
-            desc: parameters values for the request
-            :type dict:
-
-        :return endpoint name and parameters for request:
-            :rtype tuple:
-        """
-        endpoint_content: dict = FUNCTION_CLASS_METHOD_MAP[method_name]
-        endpoint_class: object = eval(endpoint_content.get('class'))()
-        endpoint_method: str = endpoint_content.get('class_method')
-
-        return getattr(
-            endpoint_class,
-            endpoint_method)(**kwargs)
-
-    def request(self, method_name: str, **kwargs) -> requests.Response:
-        """
-        Given method name from class_mapper.py and params returns the request response in json format.
-
-        :param method_name:
-            :requred:
-            desc: method name listed in class_mapper.py
-            :type str:
-
-        :param kwargs:
-            :required:
-            desc: parameters values for the request
-            :type dict:
+        :param id:
+        :param max_results:
 
         :return structured response of request:
             :rtype dict:
         """
-        endpoint, params = self.get_endpoint_params(method_name, **kwargs)
-        params['key'] = self._key
+        endpoint_content: dict = API_MAPPER[method_name]
+        endpoint: str = endpoint_content["endpoint"]
+        params: dict = endpoint_content["params"]
+
+        if published_before:
+            params.update({
+                "publishedBefore": published_before,
+            })
+        if published_after:
+            params.update({
+                "publishedAfter": published_after,
+            })
+        if region_code:
+            params.update({
+                "regionCode": region_code,
+            })
+        if max_results:
+            params.update({
+                "maxResults": max_results
+            })
+
+        params.update({
+            list(filter(lambda p: "Id" in p, params.keys()))[0]: id,
+        })
+
+        params.update({
+            "key": self._key,
+        })
+
+        for k, v in dict(params).items():
+            if v is None:
+                del params[k]
 
         return requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
