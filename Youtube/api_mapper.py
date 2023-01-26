@@ -13,7 +13,7 @@ API_MAPPER = {
         "endpoint": "/channels",
         "params": {
             "id": None,
-            "part": "snippet statistics topicDetails contentDetails brandingSettings",
+            "part": "snippet, statistics, topicDetails, contentDetails, brandingSettings",
             "maxResults": 10,
         },
     },
@@ -22,15 +22,15 @@ API_MAPPER = {
         "endpoint": "/channelSections",
         "params": {
             "channelId": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
         },
     },
 
-    "channel_sections_by_id": {
+    "channel_section_by_id": {
         "endpoint": "/channelSections",
         "params": {
             "id": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
         },
     },
 
@@ -38,16 +38,16 @@ API_MAPPER = {
         "endpoint": "/playlists",
         "params": {
             "channelId": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
             "maxResults": 10,
         },
     },
 
-    "playlists_by_id": {
+    "playlist_by_id": {
         "endpoint": "/playlists",
         "params": {
             "id": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
             "maxResults": 10,
         },
     },
@@ -56,16 +56,16 @@ API_MAPPER = {
         "endpoint": "/playlistItems",
         "params": {
             "playlistId": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
             "maxResults": 10
         },
     },
 
-    "playlist_videos_by_id": {
+    "playlist_video_by_id": {
         "endpoint": "/playlistItems",
         "params": {
             "id": None,
-            "part": "snippet contentDetails",
+            "part": "snippet, contentDetails",
             "maxResults": 10
         },
     },
@@ -107,11 +107,11 @@ API_MAPPER = {
     },
 
     "caption": {
-        "endpoint": ["/captions"],
-        "params": [{
+        "endpoint": "/captions",
+        "params": {
             "videoId": None,
             "part": "snippet",
-        }],
+        },
     },
 
 }
