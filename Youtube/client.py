@@ -71,6 +71,19 @@ class Client(Auth):
         if self._key:
             print('Client is ready')
 
+    @staticmethod
+    def __update_id(params: dict, id: str) -> dict:
+        try:
+            params.update({
+                list(filter(lambda p: "Id" in p, params.keys()))[0]: id,
+            })
+        except IndexError:
+            params.update({
+                'id': id
+            })
+
+        return params
+
     def request(self,
                 method_name: str,
                 id: str = None,
@@ -117,9 +130,7 @@ class Client(Auth):
                 "maxResults": max_results
             })
 
-        params.update({
-            list(filter(lambda p: "Id" in p, params.keys()))[0]: id,
-        })
+        params = Client.__update_id(params=params, id=id)
 
         params.update({
             "key": self._key,
