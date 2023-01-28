@@ -9,60 +9,82 @@ pip install pytubedata
 ```
 
 ## Usage
-This package requies a valid YT Data API Key. You can get one from [Google Cloud Console](https://console.cloud.google.com/apis/dashboard)
+This package requies a valid YT Data API Key. You can get one from [Google Cloud Console](https://console.cloud.google.com/apis/dashboard).
 
 
 ## Quickstart
-Getting the `Client` class
+- Create a file in `secret.yml` in the project's root directory and save the YouTube Data API key in that file.
 
-```py
-from Youtube import client
 
-c= client()
-```
+- Getting the `Client`
+  ```python
+  from Youtube import Client
+
+  c= Client()
+  ```
 
 ## Documentation
-- Search for videos
+- Search for videos (not supported)
   ```python
     c.request("search", q="search_query")
   ```
 
+- Get activities of a channel
+  ```python
+    c.request("activity", id="channel_id")
+  ```
+
 - Get details of a channel
   ```python
-    c.request("channel_stats", id="channel_id")
+    c.request("channel", id="channel_id")
+  ```
+
+- Get sections of a channel
+  ```python
+    c.request("channel_sections", id="channel_id")
+  ```
+
+- Get section of a channel by id
+  ```python
+    c.request("channel_section_by_id", id="channel_id")
   ```
 
 - Get playlists of a channel
   ```python
-    c.request("playlists_of_channel", id="channel_id")
+    c.request("playlists", id="channel_id")
   ```
 
-- Get details of a playlist
+- Get playlist of a channel by id
   ```python
-    c.request("playlist_stats", id="playlist_id")
+    c.request("playlist_by_id", id="playlist_id")
   ```
 
 - Get videos of a playlist
   ```python
     c.request("playlist_videos", id="playlist_id")
-   ```
-
-- Get details of a video
-  ```python
-    c.request("video", id="video_id")
   ```
 
-- Get comments from a video
+- Get details of a video by id 
   ```python
-  c.request("comment_for_video", id="video_id")
+    c.request("video_by_id", id="video_id")
+   ```
+
+- Get comments on a video
+  ```python
+  c.request("comments_on_video", id="video_id")
   ```
 
 - Get replies of a comment
   ```python
-    c.request("comment_replies", id="comment_id")
+    c.request("replies_to_comment", id="comment_id")
   ```
 
-Check [Youtube Data API Documentation](https://developers.google.com/youtube/v3/docs/) for optional parameters you can pass 
+- Get comment details by id
+  ```python
+    c.request("comment_by_id", id="comment_id")
+  ```
+
+[//]: # (Check [Youtube Data API Documentation]&#40;https://developers.google.com/youtube/v3/docs/&#41; for optional parameters you can pass )
 
 
 ## Contact
