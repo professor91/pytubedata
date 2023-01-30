@@ -113,15 +113,15 @@ class Client(Auth):
         endpoint: str = endpoint_content["endpoint"]
         params: dict = endpoint_content["params"]
 
-        if published_before:
+        if published_before and method_name == 'activity':
             params.update({
                 "publishedBefore": published_before,
             })
-        if published_after:
+        if published_after and method_name == 'activity':
             params.update({
                 "publishedAfter": published_after,
             })
-        if region_code:
+        if region_code and method_name == 'activity' or method_name == 'video_by_id':
             params.update({
                 "regionCode": region_code,
             })
