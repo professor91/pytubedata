@@ -7,6 +7,7 @@ API_MAPPER = {
             "part": "snippet, contentDetails",
             "maxResults": 10,
         },
+        "parse_function": "parse_activity_list_response",
     },
 
     "channel": {
@@ -16,6 +17,7 @@ API_MAPPER = {
             "part": "snippet, statistics, topicDetails, contentDetails, brandingSettings",
             "maxResults": 10,
         },
+        "parse_function": "parse_channel_response",
     },
 
     "channel_sections": {
@@ -24,6 +26,7 @@ API_MAPPER = {
             "channelId": None,
             "part": "snippet, contentDetails",
         },
+        "parse_function": "parse_channel_section_list_response",
     },
 
     "channel_section_by_id": {
@@ -41,6 +44,7 @@ API_MAPPER = {
             "part": "snippet, contentDetails",
             "maxResults": 10,
         },
+        "parse_function": "parse_playlist_list_response",
     },
 
     "playlist_by_id": {
@@ -59,6 +63,7 @@ API_MAPPER = {
             "part": "snippet, contentDetails",
             "maxResults": 10
         },
+        "parse_function": "parse_playlist_video_list_response",
     },
 
     "playlist_video_by_id": {

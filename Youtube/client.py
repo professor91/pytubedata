@@ -3,6 +3,7 @@ from urllib import parse
 from pathlib import Path
 
 from .api_mapper import API_MAPPER
+from .parser import Parser
 
 
 class Auth:
@@ -90,11 +91,13 @@ class Client(Auth):
                 max_results: int = None,
                 published_before: str = None,
                 published_after: str = None,
-                region_code: str = None
-                ) -> requests.Response:
+                region_code: str = None,
+                parse_result: bool = True,
+                ) -> dict:
         """
         Given method name from api_mapper.py and params returns the request response in json format.
 
+        :param parse_result:
         :param region_code:
         :param published_after:
         :param published_before:
@@ -140,4 +143,10 @@ class Client(Auth):
             if v is None:
                 del params[k]
 
-        return requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
+        response = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
+
+        if parse_result:
+            parse_method = endpoint_content['parse_function']
+            return getattr(Parser, parse_method)(response)
+        else:
+            return response.json()
