@@ -68,9 +68,8 @@ class Client(Auth):
 
     def __init__(self):
         super().__init__()
-        self._key = self.key
 
-        if self._key:
+        if self.key:
             print('Client is ready')
 
     @staticmethod
@@ -129,7 +128,7 @@ class Client(Auth):
         params = Client.__update_id(params=params, id=id)
 
         params.update({
-            "key": self._key,
+            "key": self.key,
         })
 
         data: list = self.__send_request(
