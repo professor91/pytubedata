@@ -118,7 +118,7 @@ class Client(Auth):
             params.update({
                 "publishedAfter": published_after,
             })
-        if region_code and method_name == 'activity' or method_name == 'video_by_id':
+        if region_code and (method_name == 'activity' or method_name == 'video_by_id'):
             params.update({
                 "regionCode": region_code,
             })
@@ -133,11 +133,9 @@ class Client(Auth):
             "key": self._key,
         })
 
-        data: list = self._send_request(
+        data: list = self.__send_request(
             endpoint=endpoint,
             params=params,
-            parse_result=parse_result,
-            parse_function=endpoint_content['parse_function']
         )
 
         if parse_result:
@@ -146,7 +144,7 @@ class Client(Auth):
         else:
             return data
 
-    def _send_request(
+    def __send_request(
             self, endpoint: str = None,
             params: dict = None,
             **kwargs) -> list:
@@ -168,13 +166,13 @@ class Client(Auth):
 
         if 'nextPageToken' in response.json().keys():
             data.extend(
-                self._send_request(
+                self.__send_request(
                     endpoint=endpoint,
                     params=params,
                     next_page_token=response.json()['nextPageToken']
                 )
             )
-
+        # Todo- error handling for api responses
         data.extend(response.json()['items'])
 
         return data
