@@ -89,7 +89,7 @@ class Client(Auth):
     def request(self,
                 method_name: str,
                 id: str = None,
-                max_results: int = None,
+                max_results: int = 10,
                 published_before: str = None,
                 published_after: str = None,
                 region_code: str = None,
@@ -122,10 +122,9 @@ class Client(Auth):
             params.update({
                 "regionCode": region_code,
             })
-        if max_results:
-            params.update({
-                "maxResults": max_results
-            })
+        params.update({
+            "maxResults": max_results
+        })
 
         params = Client.__update_id(params=params, id=id)
 

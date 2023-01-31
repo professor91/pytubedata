@@ -5,7 +5,6 @@ API_MAPPER = {
         "params": {
             "channelId": None,
             "part": "snippet, contentDetails",
-            "maxResults": 10,
         },
         "parse_function": "parse_activity_list_response",
     },
@@ -15,7 +14,6 @@ API_MAPPER = {
         "params": {
             "id": None,
             "part": "snippet, statistics, topicDetails, contentDetails, brandingSettings",
-            "maxResults": 10,
         },
         "parse_function": "parse_channel_response",
     },
@@ -43,7 +41,6 @@ API_MAPPER = {
         "params": {
             "channelId": None,
             "part": "snippet, contentDetails",
-            "maxResults": 10,
         },
         "parse_function": "parse_playlist_list_response",
     },
@@ -53,7 +50,6 @@ API_MAPPER = {
         "params": {
             "id": None,
             "part": "snippet, contentDetails",
-            "maxResults": 10,
         },
         "parse_function": "parse_playlist_list_response",
     },
@@ -63,7 +59,6 @@ API_MAPPER = {
         "params": {
             "playlistId": None,
             "part": "snippet, contentDetails",
-            "maxResults": 10
         },
         "parse_function": "parse_playlist_video_list_response",
     },
@@ -73,7 +68,6 @@ API_MAPPER = {
         "params": {
             "id": None,
             "part": "snippet, contentDetails",
-            "maxResults": 10
         },
         "parse_function": "parse_playlist_video_list_response",
     },
@@ -92,7 +86,6 @@ API_MAPPER = {
         "endpoint": "/commentThreads",
         "params": {
             "videoId": None,
-            "maxResults": 100,
             "order": "time",
             "textFormat": "plainText",
         },
@@ -103,7 +96,6 @@ API_MAPPER = {
         "params": {
             "parentId": None,
             "part": "snippet",
-            "maxResults": 20,
             "textFormat": "plainText",
         },
         "parse_function": "parse_comments_list_response",
