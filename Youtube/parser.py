@@ -6,10 +6,10 @@ import requests
 
 class Parser:
     @classmethod
-    def parse_activity_list_response(cls, response: requests.Response) -> list:
+    def parse_activity_list_response(cls, response: list) -> list:
         parsed_data: list = []
 
-        for item in response.json()['items']:
+        for item in response:
             parsed_data.append(cls._parse_activity_response(item))
 
         return parsed_data
@@ -30,8 +30,8 @@ class Parser:
         return parsed_data
 
     @staticmethod
-    def parse_channel_response(response: requests.Response) -> dict:
-        data: dict = response.json()['items'][0]
+    def parse_channel_response(response: list) -> dict:
+        data: dict = response[0]
 
         parsed_data = {
             'channel_id': data['id'],
@@ -54,10 +54,10 @@ class Parser:
         return parsed_data
 
     @classmethod
-    def parse_channel_section_list_response(cls, response: requests.Response) -> list:
+    def parse_channel_section_list_response(cls, response: list) -> list:
         parsed_data: list = []
 
-        for item in response.json()['items']:
+        for item in response:
             parsed_data.append(cls._parse_channel_section_response(item))
 
         return parsed_data
@@ -73,10 +73,10 @@ class Parser:
         return parsed_data
 
     @classmethod
-    def parse_playlist_list_response(cls, response: requests.Response) -> list:
+    def parse_playlist_list_response(cls, response: list) -> list:
         parsed_data: list = []
 
-        for item in response.json()['items']:
+        for item in response:
             parsed_data.append(cls._parse_playlist_response(item))
 
         return parsed_data
@@ -95,10 +95,10 @@ class Parser:
         return parsed_data
 
     @classmethod
-    def parse_playlist_video_list_response(cls, response: requests.Response) -> list:
+    def parse_playlist_video_list_response(cls, response: list) -> list:
         parsed_data: list = []
 
-        for item in response.json()['items']:
+        for item in response:
             parsed_data.append(cls._parse_playlist_video_response(item))
 
         return parsed_data
@@ -118,8 +118,8 @@ class Parser:
         return parsed_data
 
     @staticmethod
-    def parse_video_response(response: requests.Response) -> dict:
-        data: dict = response.json()['items'][0]
+    def parse_video_response(response: list) -> dict:
+        data: dict = response[0]
 
         return {
             'video_id': [data['id']],
@@ -144,10 +144,10 @@ class Parser:
         }
 
     @classmethod
-    def parse_comments_list_response(cls, response: requests.Response) -> list:
+    def parse_comments_list_response(cls, response: list) -> list:
         parsed_data: list = []
 
-        for item in response.json()['items']:
+        for item in response:
             parsed_data.append(cls._parse_comment_response(item))
 
         return parsed_data
@@ -161,8 +161,9 @@ class Parser:
         return parsed_data
 
     @staticmethod
-    def parse_comment_responses(response: requests.Response) -> dict:
-        data: dict = response.json()['items'][0]
+    def parse_comment_responses(response: list) -> dict:
+        data: dict = response[0]
+
         parsed_data: dict = {
             'comment_id': data['id'],
             'text_original': data['snippet']['textOriginal'],
