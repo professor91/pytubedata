@@ -1,6 +1,7 @@
 import requests
 from urllib import parse
 from pathlib import Path
+import copy
 
 from .api_mapper import API_MAPPER
 from .parser import Parser
@@ -93,26 +94,19 @@ class Client(Auth):
                 published_after: str = None,
                 region_code: str = None,
                 parse_result: bool = True,
-                ) -> dict:
+                ) -> list:
         """
-        Given method name from api_mapper.py and params returns the request response in json format.
 
-        :param parse_result:
-        :param region_code:
-        :param published_after:
-        :param published_before:
         :param method_name:
-            :requred:
-            desc: method name listed in api_mapper.py
-            :type str:
-
         :param id:
         :param max_results:
-
-        :return structured response of request:
-            :rtype dict:
+        :param published_before:
+        :param published_after:
+        :param region_code:
+        :param parse_result:
+        :return:
         """
-        endpoint_content: dict = API_MAPPER[method_name]
+        endpoint_content: dict = copy.deepcopy(API_MAPPER[method_name])
         endpoint: str = endpoint_content["endpoint"]
         params: dict = endpoint_content["params"]
 
@@ -139,14 +133,48 @@ class Client(Auth):
             "key": self._key,
         })
 
-        for k, v in dict(params).items():
-            if v is None:
-                del params[k]
-
-        response = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
+        data: list = self._send_request(
+            endpoint=endpoint,
+            params=params,
+            parse_result=parse_result,
+            parse_function=endpoint_content['parse_function']
+        )
 
         if parse_result:
             parse_method = endpoint_content['parse_function']
-            return getattr(Parser, parse_method)(response)
+            return getattr(Parser, parse_method)(data)
         else:
-            return response.json()
+            return data
+
+    def _send_request(
+            self, endpoint: str = None,
+            params: dict = None,
+            **kwargs) -> list:
+        """
+        Given method name from api_mapper.py and params returns the request response in json format.
+
+        :return structured response of request:
+            :rtype dict:
+        """
+
+        if 'next_page_token' in kwargs.keys():
+            params.update({
+                'pageToken': kwargs.get('next_page_token')
+            })
+
+        response = requests.get(self.base_url + endpoint + "?" + parse.urlencode(params))
+
+        data: list = []
+
+        if 'nextPageToken' in response.json().keys():
+            data.extend(
+                self._send_request(
+                    endpoint=endpoint,
+                    params=params,
+                    next_page_token=response.json()['nextPageToken']
+                )
+            )
+
+        data.extend(response.json()['items'])
+
+        return data
