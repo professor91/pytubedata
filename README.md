@@ -24,65 +24,69 @@ This package requies a valid YT Data API Key. You can get one from [Google Cloud
   ```
 
 ## Documentation
-- Search for videos (not supported)
+- Search for videos
   ```python
-    c.request("search", q="search_query")
+    c.search(query="api")
   ```
+
+  check out `Youtube/client.py` for other parameters
+
 
 - Get activities of a channel
   ```python
-    c.request("activity", id="channel_id")
+    c.request("activity",id="channel_id")
   ```
 
 - Get details of a channel
   ```python
-    c.request("channel", id="channel_id")
+    c.request("channel",id="channel_id")
   ```
 
 - Get sections of a channel
   ```python
-    c.request("channel_sections", id="channel_id")
+    c.request("channel_sections",id="channel_id")
   ```
 
 - Get section of a channel by id
   ```python
-    c.request("channel_section_by_id", id="channel_id")
+    c.request("channel_section_by_id",id="section_id")
   ```
 
 - Get playlists of a channel
   ```python
-    c.request("playlists", id="channel_id")
+    c.request("playlists",id="channel_id")
   ```
 
-- Get playlist of a channel by id
+- Get playlist by id
   ```python
-    c.request("playlist_by_id", id="playlist_id")
+    c.request("playlist_by_id",id="playlist_id")
   ```
 
 - Get videos of a playlist
   ```python
-    c.request("playlist_videos", id="playlist_id")
+    c.request("playlist_videos",id="playlist_id")
   ```
 
-- Get details of a video by id 
+- Get details of a video by id
   ```python
-    c.request("video_by_id", id="video_id")
+    c.request("video_by_id",id="video_id")
    ```
 
 - Get comments on a video
   ```python
-  c.request("comments_on_video", id="video_id")
-  ```
-
-- Get replies of a comment
-  ```python
-    c.request("replies_to_comment", id="comment_id")
+    c.request("comments_on_video",id="video_id")
   ```
 
 - Get comment details by id
   ```python
-    c.request("comment_by_id", id="comment_id")
+    c.request("comment_by_id",id="comment_id")
   ```
+
+- Get replies of a comment
+  ```python
+    c.request("replies_to_comment",id="comment_id")
+  ```
+
 
 [//]: # (Check [Youtube Data API Documentation]&#40;https://developers.google.com/youtube/v3/docs/&#41; for optional parameters you can pass )
 
