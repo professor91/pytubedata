@@ -7,6 +7,11 @@ from .api_mapper import API_MAPPER
 from .parser import Parser
 
 
+class ApiError(Exception):
+    def __init__(self, *args, **kwargs): # real signature unknown
+        pass
+
+
 class Auth:
     __BASE_URL = "https://www.googleapis.com/youtube/v3"
 
@@ -170,7 +175,11 @@ class Client(Auth):
                     next_page_token=response.json()['nextPageToken']
                 )
             )
-        # Todo- error handling for api responses
+
+        if response.status_code != 200:
+            res: dict = response.json()
+            raise ApiError(str(res['error']['code']) + ':'  + res['error']['errors'][0]['reason'])
+
         data.extend(response.json()['items'])
 
         return data
