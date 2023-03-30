@@ -1,5 +1,14 @@
 API_MAPPER = {
     # Public API Endpoint Functions
+    "search": {
+        "endpoint": "/search",
+        "params": {
+            "q": None,
+            "part": "snippet",
+            "type": ""
+        },
+        "parse_function": "parse_search_response",
+    },
     "activity": {
         "endpoint": "/activities",
         "params": {

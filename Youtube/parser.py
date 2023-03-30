@@ -5,6 +5,24 @@ import requests
 
 
 class Parser:
+
+    @classmethod
+    def parse_search_list_response(cls, response: list) -> list:
+        parsed_data: list = []
+
+        for item in response:
+            parsed_data.append()
+
+        return parsed_data
+
+    @staticmethod
+    def parse_search_response(response: dict) -> dict:
+        parsed_date: dict = {
+
+        }
+
+        return parsed_date
+
     @classmethod
     def parse_activity_list_response(cls, response: list) -> list:
         parsed_data: list = []
