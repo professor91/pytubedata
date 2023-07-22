@@ -3,6 +3,8 @@ from typing import Union
 from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import VideoData
 
+from pytubedata.config import ENDPOINT_VIDEO_PARAM_PART, MAX_RESULTS
+
 
 class Videos:
     """
@@ -22,7 +24,7 @@ class Videos:
             video_ids: str = ','.join(video_ids)
 
         params = {
-            "part": "contentDetails, id, localizations, snippet, statistics, status, topicDetails",
+            "part": ENDPOINT_VIDEO_PARAM_PART,
             "id": video_ids,
         }
 
@@ -36,12 +38,12 @@ class Videos:
         else:
             raise ValueError(f"Video with ID '{video_ids}' not found.")
 
-    def get_popular_videos(self, region_code: str = "IN", max_results: int = 10) -> list:
+    def get_popular_videos(self, region_code: str = "IN", max_results: int = MAX_RESULTS) -> list:
         """
         Get a list of popular videos in the given region.
         """
         params = {
-            "part": "contentDetails, id, localizations, snippet, statistics, status, topicDetails",
+            "part": ENDPOINT_VIDEO_PARAM_PART,
             "chart": 'mostPopular',
             "regionCode": region_code,
             "maxResults": max_results,

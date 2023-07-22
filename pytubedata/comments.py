@@ -3,6 +3,8 @@ from typing import Union
 from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import CommentData
 
+from pytubedata.config import ENDPOINT_COMMENT_PARAM_PART
+
 
 class Comment:
     """
@@ -21,7 +23,7 @@ class Comment:
             comment_ids = ','.join(comment_ids)
 
         params = {
-            'part': 'id, snippet',
+            'part': ENDPOINT_COMMENT_PARAM_PART,
             'id': comment_ids,
         }
 

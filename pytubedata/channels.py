@@ -3,6 +3,7 @@ from typing import Union
 from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import ChannelData
 
+from pytubedata.config import ENDPOINT_CHANNEL_PARAM_PART
 
 class Channels:
     """
@@ -19,7 +20,7 @@ class Channels:
         You can fetch multiple YouTube channels at once.
         """
         params = {
-            "part": "snippet, statistics",
+            "part": ENDPOINT_CHANNEL_PARAM_PART,
             "id": channel_ids,
         }
 
@@ -39,7 +40,7 @@ class Channels:
         Get details for a specific YouTube channel by its username.
         """
         params = {
-            "part": "snippet,statistics",
+            "part": ENDPOINT_CHANNEL_PARAM_PART,
             "forUsername": username,
         }
 

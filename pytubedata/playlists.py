@@ -3,6 +3,8 @@ from typing import Union
 from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import PlaylistData
 
+from pytubedata.config import ENDPOINT_PLAYLIST_PARAM_PART, MAX_RESULTS
+
 
 class Playlists:
     """
@@ -19,7 +21,7 @@ class Playlists:
         You can fetch multiple YouTube playlists at once.
         """
         params = {
-            "part": "snippet",
+            "part": ENDPOINT_PLAYLIST_PARAM_PART,
             "id": playlist_ids,
         }
 
@@ -33,12 +35,12 @@ class Playlists:
         else:
             raise ValueError(f'Playlist with ID {playlist_ids} not found.')
 
-    def get_playlists_by_channel(self, channel_id: str, max_results: int = 10) -> list:
+    def get_playlists_by_channel(self, channel_id: str, max_results: int = MAX_RESULTS) -> list:
         """
         Get playlists of a specific channel.
         """
         params = {
-            "part": "snippet",
+            "part": ENDPOINT_PLAYLIST_PARAM_PART,
             "channelId": channel_id,
             "maxResults": max_results,
         }
