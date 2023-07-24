@@ -67,3 +67,12 @@ class CommentData:
         self.can_rate = data['snippet']['canRate']
         self.likes = data['snippet']['likeCount']
 
+
+class SubscriptionData:
+    def __init__(self, data):
+        self.id = data.get("id")
+        self.channel_id = data['snippet']['channelId']
+        self.channel_name = data['snippet']['title']
+        self.channel_description = data['snippet']['description']
+        self.subscribed_on = data['snippet']['publishedAt']
+        self.video_count = data['contentDetails']['totalItemCount']

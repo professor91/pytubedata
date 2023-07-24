@@ -8,29 +8,33 @@ class APIRequest:
     def __init__(self, api_key, **kwargs):
         self.api_key = api_key
         self.max_results: int = kwargs.get('max_results', MAX_RESULTS)
+        self.access_token = kwargs.get('access_token', None)
 
-    def make_request(self, endpoint: str, params: dict = None) -> dict:
+    def make_request(self, endpoint: str, params: dict = None, authorize: bool = False) -> dict:
         """
         Make HTTP requests to YouTube Data API
         """
         url = APIRequest.BASE_URL + endpoint
         params = params or {}
         params["key"] = self.api_key
+        headers = {
+            'Authorization': f'Bearer {self.access_token}',
+        } if authorize else None
 
-        data = self._handle_pagination(url=url, params=params)
+        data = self._handle_pagination(url=url, params=params, headers=headers)
 
         return {
             'items': data
         }
 
-    def _handle_pagination(self, url: str, params: dict) -> list[dict]:
+    def _handle_pagination(self, url: str, params: dict, headers: dict = None) -> list[dict]:
         """
         Fetch multiple pages
         """
         all_data = []
 
         while True:
-            response = requests.get(url=url, params=params)
+            response = requests.get(url=url, headers=headers, params=params)
             self.handle_errors(status_code=response.status_code)
 
             response_data: dict = response.json()

@@ -2,6 +2,7 @@ from pytubedata.videos import Videos
 from pytubedata.channels import Channels
 from pytubedata.playlists import Playlists
 from pytubedata.comments import Comment
+from pytubedata.subscriptions import Subscriptions
 # Import other endpoint classes as needed.
 
 
@@ -14,6 +15,7 @@ class YouTubeDataAPIWrapper:
         self.channels = Channels(api_key)
         self.playlists = Playlists(api_key)
         self.comments = Comment(api_key)
+        self.subscriptions = Subscriptions(api_key)
         # Initialize other endpoint classes if required.
 
     def get_channel(self, channel_id: str):
@@ -34,4 +36,6 @@ class YouTubeDataAPIWrapper:
     def get_comment_replies(self, parent_comment_id: str):
         return self.comments.get_replies(parent_comment_id=parent_comment_id)
 
+    def get_subscriptions(self):
+        return self.subscriptions.get_subscriptions()
     # Define other public functions for different endpoints as needed.
