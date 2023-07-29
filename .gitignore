@@ -253,6 +253,7 @@ cmake-build-*/
 *.iws
 
 # IntelliJ
+.idea
 out/
 
 # mpeltonen/sbt-idea plugin
@@ -316,3 +317,5 @@ fabric.properties
 test.py
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,python
+main.py
+access_token.yml

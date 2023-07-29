@@ -4,6 +4,7 @@ from pytubedata.data_models import ChannelData
 
 from pytubedata.config import ENDPOINT_CHANNEL_PARAM_PART
 
+
 class Channels:
     """
     Represents `channels` endpoint of YouTube Data API

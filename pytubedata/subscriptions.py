@@ -1,6 +1,5 @@
 from typing import Union
 
-from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import SubscriptionData
 
 from pytubedata.config import ENDPOINT_SUBSCRIPTION_PARAM_PART
