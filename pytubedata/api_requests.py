@@ -2,13 +2,15 @@ import requests
 from pytubedata.exceptions import UnauthorizedException
 from pytubedata.config import MAX_RESULTS
 
+
 class APIRequest:
     BASE_URL = "https://www.googleapis.com/youtube/v3/"
 
-    def __init__(self, api_key, **kwargs):
+    def __init__(self, api_key, access_token: str = None, **kwargs):
+        # todo: Implement access_token logic
         self.api_key = api_key
+        self.access_token = access_token
         self.max_results: int = kwargs.get('max_results', MAX_RESULTS)
-        self.access_token = kwargs.get('access_token', None)
 
     def make_request(self, endpoint: str, params: dict = None, authorize: bool = False) -> dict:
         """

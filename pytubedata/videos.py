@@ -1,6 +1,5 @@
 from typing import Union
 
-from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import VideoData
 
 from pytubedata.config import ENDPOINT_VIDEO_PARAM_PART, MAX_RESULTS
@@ -12,8 +11,8 @@ class Videos:
     """
     ENDPOINT = 'videos'
 
-    def __init__(self, api_key: str,):
-        self.api_request = APIRequest(api_key)
+    def __init__(self, api_request: object):
+        self.api_request = api_request
 
     def get_video_details(self, video_ids: Union[str, list]) -> Union[VideoData, list[VideoData]]:
         """

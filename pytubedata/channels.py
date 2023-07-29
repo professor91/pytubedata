@@ -1,6 +1,5 @@
 from typing import Union
 
-from pytubedata.api_requests import APIRequest
 from pytubedata.data_models import ChannelData
 
 from pytubedata.config import ENDPOINT_CHANNEL_PARAM_PART
@@ -11,8 +10,8 @@ class Channels:
     """
     ENDPOINT = 'channels'
 
-    def __init__(self, api_key: str):
-        self.api_request = APIRequest(api_key)
+    def __init__(self, api_request: object):
+        self.api_request = api_request
 
     def get_channel_by_id(self, channel_ids: Union[str, list]) -> Union[ChannelData, list[ChannelData]]:
         """

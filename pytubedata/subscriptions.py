@@ -12,10 +12,8 @@ class Subscriptions:
     """
     ENDPOINT = 'subscriptions'
 
-    def __init__(self, api_key: str):
-        with open('access_token.yml', 'r') as rf:
-            self.access_token = rf.read()
-        self.api_request = APIRequest(api_key, access_token=self.access_token)
+    def __init__(self, api_request: object):
+        self.api_request = api_request
 
     def get_subscriptions(self) -> Union[SubscriptionData, list[SubscriptionData]]:
         """

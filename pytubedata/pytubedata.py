@@ -1,3 +1,4 @@
+from pytubedata.api_requests import APIRequest
 from pytubedata.videos import Videos
 from pytubedata.channels import Channels
 from pytubedata.playlists import Playlists
@@ -11,11 +12,12 @@ class YouTubeDataAPIWrapper:
     Serves as the primary interface for users to interact with the API
     """
     def __init__(self, api_key: str):
-        self.videos = Videos(api_key)
-        self.channels = Channels(api_key)
-        self.playlists = Playlists(api_key)
-        self.comments = Comment(api_key)
-        self.subscriptions = Subscriptions(api_key)
+        self.api_request = APIRequest(api_key)
+        self.videos = Videos(self.api_request)
+        self.channels = Channels(self.api_request)
+        self.playlists = Playlists(self.api_request)
+        self.comments = Comment(self.api_request)
+        self.subscriptions = Subscriptions(self.api_request)
         # Initialize other endpoint classes if required.
 
     def get_channel(self, channel_id: str):
