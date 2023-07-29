@@ -1,4 +1,5 @@
 import unittest
+from pytubedata.api_requests import APIRequest
 from pytubedata.videos import Videos
 from pytubedata.data_models import VideoData
 
@@ -7,7 +8,8 @@ class TestVideosClass(unittest.TestCase):
     def setUp(self):
         with open('secret.yml', 'r') as rf:
             self.api_key = rf.read()
-        self.videos = Videos(self.api_key)
+        self.api_request = APIRequest(api_key=self.api_key)
+        self.videos = Videos(self.api_request)
 
     def test_get_video_details(self):
         # Replace "your_test_video_id" with a valid YouTube video ID for testing.

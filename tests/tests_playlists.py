@@ -1,4 +1,5 @@
 import unittest
+from pytubedata.api_requests import APIRequest
 from pytubedata.playlists import Playlists
 from pytubedata.data_models import PlaylistData
 
@@ -7,7 +8,8 @@ class TestPlaylistsClass(unittest.TestCase):
     def setUp(self):
         with open('secret.yml', 'r') as rf:
             self.api_key = rf.read()
-        self.playlists = Playlists(self.api_key)
+        self.api_request = APIRequest(self.api_key)
+        self.playlists = Playlists(self.api_request)
 
     def test_get_playlist_details(self):
         # Replace "your_test_playlist_id" with a valid YouTube playlist ID for testing.

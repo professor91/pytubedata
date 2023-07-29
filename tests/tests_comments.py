@@ -1,4 +1,5 @@
 import unittest
+from pytubedata.api_requests import APIRequest
 from pytubedata.comments import Comment
 from pytubedata.data_models import CommentData
 
@@ -7,7 +8,8 @@ class TestVideosClass(unittest.TestCase):
     def setUp(self):
         with open('secret.yml', 'r') as rf:
             self.api_key = rf.read()
-        self.comments = Comment(self.api_key)
+        self.api_request = APIRequest(self.api_key)
+        self.comments = Comment(self.api_request)
 
     def test_get_comments(self):
         comment_ids = 'UgxAkHWgQU2sMVcsQlx4AaABAg'
