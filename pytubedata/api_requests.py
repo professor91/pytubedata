@@ -1,29 +1,75 @@
+"""
+pytubedata.api_requests
+
+This module provides a utility class to make HTTP requests to the YouTube Data API and handle pagination and errors.
+
+Classes:
+    APIRequest: Encapsulates all required functions to make HTTP requests to the YouTube Data API.
+"""
 import requests
 from pytubedata.exceptions import UnauthorizedException
 from pytubedata.config import MAX_RESULTS
 
 
 class APIRequest:
+    """
+    A utility class to make HTTP requests to the YouTube Data API and handle pagination and errors.
+
+    Attributes:
+        BASE_URL (str): The base URL for the YouTube Data API.
+
+    Methods:
+        make_request(endpoint: str, params: dict = None, authorize: bool = False) -> dict:
+            Make an HTTP request to the YouTube Data API.
+
+        _handle_pagination(url: str, params: dict, headers: dict = None) -> list[dict]:
+            Handle pagination in the API responses.
+
+        handle_errors(status_code: int):
+            Handle API errors in the response.
+
+    Raises:
+        UnauthorizedException: If the API key is invalid or missing.
+        Exception: If the API request fails with a status code other than 200.
+    """
     BASE_URL = "https://www.googleapis.com/youtube/v3/"
 
     def __init__(self, api_key, access_token: str = None, **kwargs):
-        # todo: Implement access_token logic
+        """
+        Initialize the APIRequest object.
+
+        Args:
+            api_key (str):  The API key to access the YouTube Data API.
+                            You can get one from [Google Cloud Console](https://console.cloud.google.com/apis/dashboard).
+            access_token (str, optional): An OAuth2 access token for authorized requests. Defaults to None.
+            **kwargs: Additional keyword arguments.
+                max_results (int, optional): The maximum number of results to fetch (default is MAX_RESULTS from config).
+        """
         self.api_key = api_key
         self.access_token = access_token
         self.max_results: int = kwargs.get('max_results', MAX_RESULTS)
 
     def make_request(self, endpoint: str, params: dict = None, authorize: bool = False) -> dict:
         """
-        Make HTTP requests to YouTube Data API
+        Make an HTTP (GET) request to the YouTube Data API.
+
+        Args:
+            endpoint (str): The endpoint to be called.
+            params (dict, optional): The parameters to be included in the request.
+            authorize (bool, optional): Whether to include the access token for authenticated requests.
+
+        Returns:
+            dict: The JSON response from the API.
+
+        Note: This function does not directly make the request but only prepares the params and headers,
+                and depends on `_handle_pagination` method to get the request response
         """
         url = APIRequest.BASE_URL + endpoint
         params = params or {}
         params["key"] = self.api_key
-        headers = {
-            'Authorization': f'Bearer {self.access_token}',
-        } if authorize else None
+        headers = {'Authorization': f'Bearer {self.access_token}'} if authorize else None
 
-        data = self._handle_pagination(url=url, params=params, headers=headers)
+        data: list[dict] = self._handle_pagination(url=url, params=params, headers=headers)
 
         return {
             'items': data
@@ -31,7 +77,17 @@ class APIRequest:
 
     def _handle_pagination(self, url: str, params: dict, headers: dict = None) -> list[dict]:
         """
-        Fetch multiple pages
+        Handle pagination in the API responses.
+
+        Args:
+            url (str): The URL of the API endpoint.
+            params (dict): The parameters to be included in the request.
+            headers (dict, optional): The headers to be included in the request.
+
+        Returns:
+            list[dict]: The list of data items retrieved from multiple API pages.
+
+        Note: This function makes the actual api requests.
         """
         all_data = []
 
@@ -46,20 +102,30 @@ class APIRequest:
             next_page_token = response_data.get("nextPageToken")
 
             if len(all_data)+5 > self.max_results:
+                """
+                Stop fetching more pages when the desired maximum number of results is reached.
+                The YouTube Data API returns 5 results per page.
+                """
                 break
 
             if not next_page_token:
                 break
 
             params["pageToken"] = next_page_token
-            # print(next_page_token)
 
         return all_data
 
     @staticmethod
     def handle_errors(status_code: int):
         """
-        API error handler
+        Handle API errors in the response.
+
+        Args:
+            status_code (int): The HTTP status code of the API response.
+
+        Raises:
+            UnauthorizedException: If the API key is invalid or missing.
+            Exception: If the API request fails with a status code other than 200.
         """
         if status_code == 400:
             raise UnauthorizedException("Invalid or missing API key.")

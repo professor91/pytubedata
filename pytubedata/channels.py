@@ -1,3 +1,12 @@
+"""
+pytubedata.channels
+
+This module provides a convenient interface to interact with the 'channels' endpoint of the YouTube Data API.
+It allows users to retrieve information about YouTube channels by their IDs or usernames.
+
+Classes:
+    Channels: Encapsulates functions to interact with the 'channels' endpoint of the YouTube Data API.
+"""
 from typing import Union
 
 from pytubedata.data_models import ChannelData
@@ -7,17 +16,46 @@ from pytubedata.config import ENDPOINT_CHANNEL_PARAM_PART
 
 class Channels:
     """
-    Represents `channels` endpoint of YouTube Data API
+    Encapsulates functions to interact with the `channels` endpoint of YouTube Data API
+
+    Attributes:
+        ENDPOINT (str): The endpoint name of YouTube data api.
+
+    Methods:
+        get_channel_by_id(channel_ids: Union[str, list]) -> Union[ChannelData, list[ChannelData]]:
+            Get details for a specific YouTube channel by its ID or fetch multiple channels at once.
+
+        get_channel_by_username(username: str) -> ChannelData:
+            Get details for a specific YouTube channel by its username.
+
+    Raises:
+        ValueError: If the channel_id or channel username are invalid or missing.
     """
     ENDPOINT = 'channels'
 
     def __init__(self, api_request: object):
+        """
+        Initializes the Channels object with the provided APIRequest instance.
+
+        Args:
+            api_request (object): An instance of APIRequest used to make requests to the YouTube Data API.
+        """
         self.api_request = api_request
 
     def get_channel_by_id(self, channel_ids: Union[str, list]) -> Union[ChannelData, list[ChannelData]]:
         """
-        Get details for a specific YouTube channel by its ID.
-        You can fetch multiple YouTube channels at once.
+        Get details for a specific YouTube channel by its ID or fetch multiple channels at once.
+
+        Args:
+            channel_ids (Union[str, list]): The ID(s) of the YouTube channel(s) to fetch.
+                                            Can be a single ID or a list of IDs.
+
+        Returns:
+            Union[ChannelData, list[ChannelData]]: A single ChannelData object if a single channel is fetched,
+                                                    or a list of ChannelData objects if multiple channels are fetched.
+
+        Raises:
+            ValueError: If the channel with the provided ID(s) is not found.
         """
         params = {
             "part": ENDPOINT_CHANNEL_PARAM_PART,
@@ -38,6 +76,15 @@ class Channels:
     def get_channel_by_username(self, username: str) -> ChannelData:
         """
         Get details for a specific YouTube channel by its username.
+
+        Args:
+            username (str): The username of the YouTube channel to fetch.
+
+        Returns:
+            ChannelData: The ChannelData object containing the details of the fetched channel.
+
+        Raises:
+            ValueError: If the channel with the provided username is not found.
         """
         params = {
             "part": ENDPOINT_CHANNEL_PARAM_PART,

@@ -1,8 +1,20 @@
-# todo: go through video, channel, playlist etc resources and add all the necessary attributes in the respective model
+"""
+pytubedata.data_models
+
+This module contains data model classes to represent different API endpoint responses from the YouTube Data API.
+
+Classes:
+    VideoData: Represents the API response for the 'videos' endpoint.
+    ChannelData: Represents the API response for the 'channels' endpoint.
+    PlaylistData: Represents the API response for the 'playlists' endpoint.
+    CommentData: Represents the API response for the 'comments' endpoint.
+    SubscriptionData: Represents the API response for the 'subscriptions' endpoint.
+"""
+
 
 class VideoData:
     """
-    Represents the APIs Video endpoint responses
+    Represents the API response for the 'videos' endpoint.
     """
     def __init__(self, data):
         self.id = data["id"]
@@ -23,7 +35,7 @@ class VideoData:
 
 class ChannelData:
     """
-    Represents the APIs Channel endpoint responses
+    Represents the API response for the 'channels' endpoint.
     """
     def __init__(self, data):
         self.id = data["id"]
@@ -37,7 +49,7 @@ class ChannelData:
 
 class PlaylistData:
     """
-    Represents the APIs Playlist endpoint responses
+    Represents the API response for the 'playlists' endpoint.
     """
     def __init__(self, data):
         self.id = data["id"]
@@ -52,7 +64,7 @@ class PlaylistData:
 
 class CommentData:
     """
-    Represents the APIs Comment endpoint responses
+    Represents the API response for the 'comments' endpoint.
     """
     def __init__(self, data):
         self.id = data["id"]
@@ -69,6 +81,9 @@ class CommentData:
 
 
 class SubscriptionData:
+    """
+    Represents the API response for the 'subscriptions' endpoint.
+    """
     def __init__(self, data):
         self.id = data.get("id")
         self.channel_id = data['snippet']['channelId']
