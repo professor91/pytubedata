@@ -2,7 +2,8 @@
 pytubedata.videos
 
 This module provides a convenient interface to interact with the 'videos' endpoint of the YouTube Data API.
-It allows users to retrieve information about YouTube videos by their or get popular videos from a region.
+It allows users to retrieve information about YouTube videos by their ids, get popular videos from a region,
+get authenticated user's liked or disliked videos.
 
 Classes:
     Videos: Encapsulates functions to interact with the 'videos' endpoint of the YouTube Data API.
@@ -27,6 +28,9 @@ class Videos:
 
         get_popular_videos(region_code: str = "IN", max_results: int = MAX_RESULTS) -> list:
             Get a list of popular videos in the given region.
+
+        get_my_liked_videos(self, rating: str) -> list:
+            Get the list of videos liked/disliked by the authenticated user.
 
     Raises:
         ValueError: If the video_id(s) are invalid or missing.
@@ -102,3 +106,28 @@ class Videos:
             return [VideoData(item) for item in response["items"]]
         else:
             raise ValueError(f'Popular videos from region {region_code} not found.')
+
+    def get_rated_videos(self, rating: str) -> list:
+        """
+        Get the list of videos liked/disliked by the authenticated user.
+
+        Args:
+            rating (str): Takes only two values `liked` or `disliked`
+
+        Returns:
+            list: The list of VideoData object containing the details of the fetched videos.
+
+        Raises:
+            ValueError: If the liked or disliked videos not found.
+        """
+        params = {
+            "part": ENDPOINT_VIDEO_PARAM_PART,
+            "myRating": rating,
+        }
+
+        response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
+
+        if 'items' in response:
+            return [VideoData(item) for item in response["items"]]
+        else:
+            raise ValueError(f'No {str.upper(rating)} videos found.')
