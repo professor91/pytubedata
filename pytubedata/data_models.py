@@ -80,6 +80,19 @@ class CommentData:
         self.likes = data['snippet']['likeCount']
 
 
+class CommentThreadData:
+    """
+    Represents the API response for the 'commentThreads' endpoint.
+    """
+    def __init__(self, data):
+        self.id: str = data["id"]
+        self.top_level_comment: object = CommentData(data["snippet"]["topLevelComment"])
+        self.can_reply: bool = data["snippet"]["canReply"]
+        self.reply_count: int = data["snippet"]["totalReplyCount"]
+        if self.reply_count > 0:
+            self.replies: list[CommentData] = [CommentData(item) for item in data["replies"]["comments"]]
+
+
 class SubscriptionData:
     """
     Represents the API response for the 'subscriptions' endpoint.
