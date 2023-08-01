@@ -7,11 +7,11 @@ Classes:
     YouTubeDataAPIWrapper: Serves as the primary interface for users to interact with the YouTube API
 """
 from pytubedata.api_requests import APIRequest
-from pytubedata.videos import Videos
-from pytubedata.channels import Channels
-from pytubedata.playlists import Playlists
-from pytubedata.comments import Comments
-from pytubedata.subscriptions import Subscriptions
+from pytubedata.endpoint.videos import Videos
+from pytubedata.endpoint.channels import Channels
+from pytubedata.endpoint.playlists import Playlists
+from pytubedata.endpoint.comments import Comments
+from pytubedata.endpoint.subscriptions import Subscriptions
 # Import other endpoint classes as needed.
 from typing import Union
 
