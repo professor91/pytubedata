@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import SubscriptionData
+from pytubedata.subscription import Subscription
 
 from pytubedata.config import ENDPOINT_SUBSCRIPTION_PARAM_PART
 
@@ -41,12 +41,12 @@ class Subscriptions:
         """
         self.api_request = api_request
 
-    def get_subscriptions(self) -> Union[SubscriptionData, list[SubscriptionData]]:
+    def get_subscriptions(self) -> Union[Subscription, list[Subscription]]:
         """
         Get the user's subscriptions
 
         Returns:
-            Union[SubscriptionData, list[SubscriptionData]]: A single SubscriptionData object if a single subscriber is found,
+            Union[Subscription, list[SubscriptionData]]: A single SubscriptionData object if a single subscriber is found,
                                                     or a list of SubscriptionData objects if multiple subscription are found.
 
         Raises:
@@ -61,8 +61,8 @@ class Subscriptions:
 
         if 'items' in response:
             if len(response['items']) > 1:
-                return [SubscriptionData(item) for item in response['items']]
+                return [Subscription(item) for item in response['items']]
             else:
-                return SubscriptionData(response['items'][0])
+                return Subscription(response['items'][0])
         else:
             raise ValueError('Subscribers for user not found.')

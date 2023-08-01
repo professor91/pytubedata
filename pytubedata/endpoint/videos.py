@@ -10,7 +10,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import VideoData
+from pytubedata.video import Video
 
 from pytubedata.config import ENDPOINT_VIDEO_PARAM_PART, MAX_RESULTS
 
@@ -46,7 +46,7 @@ class Videos:
         """
         self.api_request = api_request
 
-    def get_video_details(self, video_ids: Union[str, list]) -> Union[VideoData, list[VideoData]]:
+    def get_video_details(self, video_ids: Union[str, list]) -> Union[Video, list[Video]]:
         """
         Get details for a specific YouTube video by its ID or fetch multiple videos at once.
 
@@ -55,7 +55,7 @@ class Videos:
                                             Can be a single ID or a list of IDs.
 
         Returns:
-            Union[VideoData, list[VideoData]]: A single VideoData object if a single video is fetched,
+            Union[Video, list[VideoData]]: A single VideoData object if a single video is fetched,
                                                     or a list of VideoData objects if multiple videos are fetched.
 
         Raises:
@@ -73,9 +73,9 @@ class Videos:
 
         if "items" in response:
             if len(response["items"]) > 1:
-                return [VideoData(items) for items in response['items']]
+                return [Video(items) for items in response['items']]
             else:
-                return VideoData(response['items'][0])
+                return Video(response['items'][0])
         else:
             raise ValueError(f"Video with ID '{video_ids}' not found.")
 
@@ -103,7 +103,7 @@ class Videos:
         response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
 
         if 'items' in response:
-            return [VideoData(item) for item in response["items"]]
+            return [Video(item) for item in response["items"]]
         else:
             raise ValueError(f'Popular videos from region {region_code} not found.')
 
@@ -128,6 +128,6 @@ class Videos:
         response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
 
         if 'items' in response:
-            return [VideoData(item) for item in response["items"]]
+            return [Video(item) for item in response["items"]]
         else:
             raise ValueError(f'No {str.upper(rating)} videos found.')

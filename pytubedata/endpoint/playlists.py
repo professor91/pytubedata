@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import PlaylistData
+from pytubedata.playlist import Playlist
 
 from pytubedata.config import ENDPOINT_PLAYLIST_PARAM_PART, MAX_RESULTS
 
@@ -42,7 +42,7 @@ class Playlists:
         """
         self.api_request = api_request
 
-    def get_playlist_details(self, playlist_ids: Union[str, list]) -> Union[PlaylistData, list[PlaylistData]]:
+    def get_playlist_details(self, playlist_ids: Union[str, list]) -> Union[Playlist, list[Playlist]]:
         """
         Get details for a specific YouTube playlist by its ID or fetch multiple playlists at once.
 
@@ -51,7 +51,7 @@ class Playlists:
                                             Can be a single ID or a list of IDs.
 
         Returns:
-            Union[PlaylistData, list[PlaylistData]]: A single PlaylistData object if a single playlist is fetched,
+            Union[Playlist, list[PlaylistData]]: A single PlaylistData object if a single playlist is fetched,
                                                     or a list of PlaylistData objects if multiple playlists are fetched.
 
         Raises:
@@ -66,9 +66,9 @@ class Playlists:
 
         if 'items' in response:
             if len(response['items']) > 1:
-                return [PlaylistData(item) for item in response['items']]
+                return [Playlist(item) for item in response['items']]
             else:
-                return PlaylistData(response['items'][0])
+                return Playlist(response['items'][0])
         else:
             raise ValueError(f'Playlist with ID {playlist_ids} not found.')
 
@@ -93,6 +93,6 @@ class Playlists:
 
         response: dict = self.api_request.make_request(Playlists.ENDPOINT, params=params)
 
-        return [PlaylistData(item) for item in response["items"]]
+        return [Playlist(item) for item in response["items"]]
 
     # Add other methods for different parameters as needed.

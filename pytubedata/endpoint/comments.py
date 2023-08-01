@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import CommentData
+from pytubedata.comment import Comment
 
 from pytubedata.config import ENDPOINT_COMMENT_PARAM_PART
 
@@ -42,7 +42,7 @@ class Comments:
         """
         self.api_request = api_request
 
-    def get_comments(self, comment_ids: Union[str, list]) -> Union[CommentData, list[CommentData]]:
+    def get_comments(self, comment_ids: Union[str, list]) -> Union[Comment, list[Comment]]:
         """
         Get details for a specific YouTube comment by its ID or fetch multiple comments at once.
 
@@ -51,7 +51,7 @@ class Comments:
                                             Can be a single ID or a list of IDs.
 
         Returns:
-            Union[CommentData, list[CommentData]]: A single CommentData object if a single channel is fetched,
+            Union[Comment, list[CommentData]]: A single CommentData object if a single channel is fetched,
                                                     or a list of CommentData objects if multiple comments are fetched.
 
         Raises:
@@ -69,9 +69,9 @@ class Comments:
 
         if "items" in response:
             if len(response["items"]) > 1:
-                return [CommentData(item) for item in response['items']]
+                return [Comment(item) for item in response['items']]
             else:
-                return CommentData(response['items'][0])
+                return Comment(response['items'][0])
         else:
             raise ValueError(f"Comment with ID '{comment_ids}' not found.")
 
@@ -96,6 +96,6 @@ class Comments:
         response: dict = self.api_request.make_request(Comments.ENDPOINT, params=params)
 
         if 'items' in response:
-            return [CommentData(item) for item in response['items']]
+            return [Comment(item) for item in response['items']]
         else:
             raise ValueError(f"Comment with ID '{parent_comment_id}' has no replies.")

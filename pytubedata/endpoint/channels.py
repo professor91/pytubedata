@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import ChannelData
+from pytubedata.channel import Channel
 
 from pytubedata.config import ENDPOINT_CHANNEL_PARAM_PART
 
@@ -42,7 +42,7 @@ class Channels:
         """
         self.api_request = api_request
 
-    def get_channel_by_id(self, channel_ids: Union[str, list]) -> Union[ChannelData, list[ChannelData]]:
+    def get_channel_by_id(self, channel_ids: Union[str, list]) -> Union[Channel, list[Channel]]:
         """
         Get details for a specific YouTube channel by its ID or fetch multiple channels at once.
 
@@ -51,7 +51,7 @@ class Channels:
                                             Can be a single ID or a list of IDs.
 
         Returns:
-            Union[ChannelData, list[ChannelData]]: A single ChannelData object if a single channel is fetched,
+            Union[Channel, list[ChannelData]]: A single ChannelData object if a single channel is fetched,
                                                     or a list of ChannelData objects if multiple channels are fetched.
 
         Raises:
@@ -67,9 +67,9 @@ class Channels:
         # Parse the API response and create a ChannelData object.
         if "items" in response:
             if len(response['items']) > 1:
-                return [ChannelData(items) for items in response['items']]
+                return [Channel(items) for items in response['items']]
             else:
-                return ChannelData(response['items'][0])
+                return Channel(response['items'][0])
         else:
             raise ValueError(f"Channel with ID '{channel_ids}' not found.")
 

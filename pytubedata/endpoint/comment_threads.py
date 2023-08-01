@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.data_models import CommentThreadData
+from pytubedata.comment_thread import CommentThreadData
 
 from pytubedata.config import ENDPOINT_COMMENT_THREAD_PARAM_PART
 
