@@ -12,27 +12,6 @@ Classes:
 """
 
 
-class VideoData:
-    """
-    Represents the API response for the 'videos' endpoint.
-    """
-    def __init__(self, data):
-        self.id = data["id"]
-        self.title = data["snippet"]["title"]
-        self.description = data["snippet"]["description"]
-        self.published_at = data["snippet"]["publishedAt"]
-        self.channel_id = data['snippet']['channelId']
-        self.channel_title = data["snippet"]["channelTitle"]
-        self.category_id = data['snippet']['categoryId']
-        self.duration = data['contentDetails']['duration']
-        self.views = data["statistics"]["viewCount"]
-        self.likes = data['statistics']['likeCount']
-        self.favourite_count = data['statistics']['favoriteCount']
-        self.comment_count = data['statistics']['commentCount']
-        self.topic_categories = data['topicDetails']['topicCategories']
-        # Add more attributes as needed.
-
-
 class ChannelData:
     """
     Represents the API response for the 'channels' endpoint.
@@ -47,19 +26,17 @@ class ChannelData:
         # Add more attributes as needed.
 
 
-class PlaylistData:
+class CommentThreadData:
     """
-    Represents the API response for the 'playlists' endpoint.
+    Represents the API response for the 'commentThreads' endpoint.
     """
     def __init__(self, data):
-        self.id = data["id"]
-        self.title = data["snippet"]["title"]
-        self.description = data["snippet"]["description"]
-        self.published_at = data["snippet"]["publishedAt"]
-        self.channel_id = data["snippet"]["channelId"]
-        self.channel_title = data["snippet"]["channelTitle"]
-        self.thumbnail_url = data["snippet"]["thumbnails"]["default"]["url"]
-        # Add more attributes as needed.
+        self.id: str = data["id"]
+        self.top_level_comment: object = CommentData(data["snippet"]["topLevelComment"])
+        self.can_reply: bool = data["snippet"]["canReply"]
+        self.reply_count: int = data["snippet"]["totalReplyCount"]
+        if self.reply_count > 0:
+            self.replies: list[CommentData] = [CommentData(item) for item in data["replies"]["comments"]]
 
 
 class CommentData:
@@ -80,17 +57,19 @@ class CommentData:
         self.likes = data['snippet']['likeCount']
 
 
-class CommentThreadData:
+class PlaylistData:
     """
-    Represents the API response for the 'commentThreads' endpoint.
+    Represents the API response for the 'playlists' endpoint.
     """
     def __init__(self, data):
-        self.id: str = data["id"]
-        self.top_level_comment: object = CommentData(data["snippet"]["topLevelComment"])
-        self.can_reply: bool = data["snippet"]["canReply"]
-        self.reply_count: int = data["snippet"]["totalReplyCount"]
-        if self.reply_count > 0:
-            self.replies: list[CommentData] = [CommentData(item) for item in data["replies"]["comments"]]
+        self.id = data["id"]
+        self.title = data["snippet"]["title"]
+        self.description = data["snippet"]["description"]
+        self.published_at = data["snippet"]["publishedAt"]
+        self.channel_id = data["snippet"]["channelId"]
+        self.channel_title = data["snippet"]["channelTitle"]
+        self.thumbnail_url = data["snippet"]["thumbnails"]["default"]["url"]
+        # Add more attributes as needed.
 
 
 class SubscriptionData:
@@ -104,3 +83,24 @@ class SubscriptionData:
         self.channel_description = data['snippet']['description']
         self.subscribed_on = data['snippet']['publishedAt']
         self.video_count = data['contentDetails']['totalItemCount']
+
+
+class VideoData:
+    """
+    Represents the API response for the 'videos' endpoint.
+    """
+    def __init__(self, data):
+        self.id = data["id"]
+        self.title = data["snippet"]["title"]
+        self.description = data["snippet"]["description"]
+        self.published_at = data["snippet"]["publishedAt"]
+        self.channel_id = data['snippet']['channelId']
+        self.channel_title = data["snippet"]["channelTitle"]
+        self.category_id = data['snippet']['categoryId']
+        self.duration = data['contentDetails']['duration']
+        self.views = data["statistics"]["viewCount"]
+        self.likes = data['statistics']['likeCount']
+        self.favourite_count = data['statistics']['favoriteCount']
+        self.comment_count = data['statistics']['commentCount']
+        self.topic_categories = data['topicDetails']['topicCategories']
+        # Add more attributes as needed.
