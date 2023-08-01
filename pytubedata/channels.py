@@ -73,30 +73,30 @@ class Channels:
         else:
             raise ValueError(f"Channel with ID '{channel_ids}' not found.")
 
-    def get_channel_by_username(self, username: str) -> ChannelData:
-        """
-        Get details for a specific YouTube channel by its username.
-
-        Args:
-            username (str): The username of the YouTube channel to fetch.
-
-        Returns:
-            ChannelData: The ChannelData object containing the details of the fetched channel.
-
-        Raises:
-            ValueError: If the channel with the provided username is not found.
-        """
-        params = {
-            "part": ENDPOINT_CHANNEL_PARAM_PART,
-            "forUsername": username,
-        }
-
-        response: dict = self.api_request.make_request(Channels.ENDPOINT, params=params)
-
-        # Parse the API response and create a ChannelData object.
-        if "items" in response and len(response["items"]) > 0:
-            return ChannelData(response["items"][0])
-        else:
-            raise ValueError(f"Channel with username '{username}' not found.")
+    # def get_channel_by_username(self, username: str) -> ChannelData:
+    #     """
+    #     Get details for a specific YouTube channel by its username.
+    #
+    #     Args:
+    #         username (str): The username of the YouTube channel to fetch.
+    #
+    #     Returns:
+    #         ChannelData: The ChannelData object containing the details of the fetched channel.
+    #
+    #     Raises:
+    #         ValueError: If the channel with the provided username is not found.
+    #     """
+    #     params = {
+    #         "part": ENDPOINT_CHANNEL_PARAM_PART,
+    #         "forUsername": username,
+    #     }
+    #
+    #     response: dict = self.api_request.make_request(Channels.ENDPOINT, params=params)
+    #
+    #     # Parse the API response and create a ChannelData object.
+    #     if "items" in response and len(response["items"]) > 0:
+    #         return ChannelData(response["items"][0])
+    #     else:
+    #         raise ValueError(f"Channel with username '{username}' not found.")
 
     # Add other methods for different endpoints of the channels API as needed.
