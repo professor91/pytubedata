@@ -26,6 +26,12 @@ class YouTubeDataAPIWrapper:
         get_channel(channel_id: Union[str, list]) -> ChannelData or list[ChannelData]:
             Fetch details for a specific YouTube channel by its ID or multiple channels at once.
 
+        get_comment_thread(self, comment_thread_id: Union[str, list]) -> CommentThread or list[CommentThread]:
+            Fetch details of a specific YouTube comment thread by its ID or multiple comment threads at once.
+
+        get_videos_comment_threads(self, video_id: str) -> list[CommentThread]:
+            Fetch all comment threads of a specific YouTube video
+
         get_comments(comment_id: Union[str, list]) -> CommentData or list[CommentData]:
             Fetch details for a specific YouTube comment by its ID or multiple comments at once.
 
@@ -47,6 +53,7 @@ class YouTubeDataAPIWrapper:
     def __init__(self, api_key: str):
         self.api_request = APIRequest(api_key)
         self.channels = Channels(self.api_request)
+        self.comment_threads = CommentThreads(self.api_request)
         self.comments = Comments(self.api_request)
         self.playlists = Playlists(self.api_request)
         self.subscriptions = Subscriptions(self.api_request)
@@ -55,6 +62,12 @@ class YouTubeDataAPIWrapper:
 
     def get_channel(self, channel_id: Union[str, list]):
         return self.channels.get_channel_by_id(channel_ids=channel_id)
+
+    def get_comment_thread(self, comment_thread_id: Union[str, list]):
+        return self.comment_threads.get_comment_thread_by_id(comment_thread_ids=comment_thread_id)
+
+    def get_videos_comment_threads(self, video_id: str):
+        return self.comment_threads.get_video_comment_threads(video_id=video_id)
 
     def get_comments(self, commend_id: Union[str, list]):
         return self.comments.get_comments(comment_ids=commend_id)

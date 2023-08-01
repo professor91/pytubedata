@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Union
 
-from pytubedata.comment_thread import CommentThreadData
+from pytubedata.comment_thread import CommentThread
 
 from pytubedata.config import ENDPOINT_COMMENT_THREAD_PARAM_PART
 
@@ -42,7 +42,7 @@ class CommentThreads:
         """
         self.api_request = api_request
 
-    def get_comment_thread_by_id(self, comment_thread_ids: Union[str, list]) -> Union[CommentThreadData, list[CommentThreadData]]:
+    def get_comment_thread_by_id(self, comment_thread_ids: Union[str, list]) -> Union[CommentThread, list[CommentThread]]:
         """
         Get details for a specific YouTube comment by its ID or fetch multiple comments at once.
 
@@ -51,7 +51,7 @@ class CommentThreads:
                                                     Can be a single ID or a list of IDs.
 
         Returns:
-            Union[CommentThreadData, list[CommentThreadData]]: A single CommentThreadData object if a single comment thread is fetched,
+            Union[CommentThread, list[CommentThreadData]]: A single CommentThreadData object if a single comment thread is fetched,
                                                                 or a list of CommentThreadData objects if multiple comment threads are fetched.
 
         Raises:
@@ -66,13 +66,13 @@ class CommentThreads:
 
         if "items" in response:
             if len(response["items"]) > 1:
-                return [CommentThreadData(item) for item in response['items']]
+                return [CommentThread(item) for item in response['items']]
             else:
-                return CommentThreadData(response['items'][0])
+                return CommentThread(response['items'][0])
         else:
             raise ValueError(f"Comment Thread with ID '{comment_thread_ids}' not found.")
 
-    def get_video_comment_threads(self, video_id: str) -> list[CommentThreadData]:
+    def get_video_comment_threads(self, video_id: str) -> list[CommentThread]:
         """
         Get all comments from a specific YouTube video by its ID.
 
@@ -80,7 +80,7 @@ class CommentThreads:
             video_id (str): The ID of the YouTube video for which comments to be fetched.
 
         Returns:
-            list[CommentThreadData]: A list of CommentThreadData objects.
+            list[CommentThread]: A list of CommentThreadData objects.
 
         Raises:
             ValueError: If the comment thread with the provided video id is not found.
@@ -93,7 +93,7 @@ class CommentThreads:
         response: dict = self.api_request.make_request(CommentThreads.ENDPOINT, params=params)
 
         if len(response["items"]) > 0:
-            return [CommentThreadData(item) for item in response['items']]
+            return [CommentThread(item) for item in response['items']]
         else:
             raise ValueError(f"Comment Thread for video with ID '{video_id}' not found.")
 
