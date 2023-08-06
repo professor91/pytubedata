@@ -1,4 +1,4 @@
-from pytubedata.data_models import PlaylistData
+from pytubedata.data_models.playlist import PlaylistData
 
 
 class Playlist(PlaylistData):

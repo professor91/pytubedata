@@ -1,4 +1,4 @@
-from pytubedata.data_models import ChannelData
+from pytubedata.data_models.channel import ChannelData
 
 
 class Channel(ChannelData):

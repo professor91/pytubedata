@@ -1,4 +1,4 @@
-from pytubedata.data_models import CommentThreadData
+from pytubedata.data_models.comment_thread import CommentThreadData
 
 
 class CommentThread(CommentThreadData):

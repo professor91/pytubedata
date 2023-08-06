@@ -1,4 +1,4 @@
-from pytubedata.data_models import CommentData
+from pytubedata.data_models.comment import CommentData
 
 
 class Comment(CommentData):

@@ -1,4 +1,4 @@
-from pytubedata.data_models import SubscriptionData
+from pytubedata.data_models.subscription import SubscriptionData
 
 
 class Subscription(SubscriptionData):

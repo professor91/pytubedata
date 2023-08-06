@@ -1,4 +1,4 @@
-from pytubedata.data_models import VideoData
+from pytubedata.data_models.video import VideoData
 
 
 class Video(VideoData):
