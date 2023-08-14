@@ -66,9 +66,9 @@ class Playlists:
 
         if 'items' in response:
             if len(response['items']) > 1:
-                return [Playlist(item) for item in response['items']]
+                return [Playlist(item, self.api_request) for item in response['items']]
             else:
-                return Playlist(response['items'][0])
+                return Playlist(response['items'][0], self.api_request)
         else:
             raise ValueError(f'Playlist with ID {playlist_ids} not found.')
 

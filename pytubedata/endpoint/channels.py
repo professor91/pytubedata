@@ -67,9 +67,9 @@ class Channels:
         # Parse the API response and create a ChannelData object.
         if "items" in response:
             if len(response['items']) > 1:
-                return [Channel(items) for items in response['items']]
+                return [Channel(items, self.api_request) for items in response['items']]
             else:
-                return Channel(response['items'][0])
+                return Channel(response['items'][0], self.api_request)
         else:
             raise ValueError(f"Channel with ID '{channel_ids}' not found.")
 

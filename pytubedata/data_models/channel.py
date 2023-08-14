@@ -16,7 +16,7 @@ class ChannelData:
         self._data = data
 
     @property
-    def id(self) -> int:
+    def id(self) -> str:
         return self._data['id']
 
     @property

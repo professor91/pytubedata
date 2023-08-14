@@ -37,7 +37,7 @@ class PlaylistItems:
         """
         self.api_request = api_request
 
-    def get_playlist_items(self, playlist_id: str) -> list:
+    def get_playlist_items(self, playlist_id: str) -> list[PlaylistItem]:
         """
         Get videos of a playlist given its id.
 
