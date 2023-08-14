@@ -72,7 +72,7 @@ class Playlists:
         else:
             raise ValueError(f'Playlist with ID {playlist_ids} not found.')
 
-    def get_playlists_by_channel(self, channel_id: str, max_results: int = MAX_RESULTS) -> list:
+    def get_playlists_by_channel(self, channel_id: str, max_results: int = MAX_RESULTS) -> list[Playlist]:
         """
         Get playlists of a channel given its id.
 
@@ -93,6 +93,6 @@ class Playlists:
 
         response: dict = self.api_request.make_request(Playlists.ENDPOINT, params=params)
 
-        return [Playlist(item) for item in response["items"]]
+        return [Playlist(item, self.api_request) for item in response["items"]]
 
     # Add other methods for different parameters as needed.
