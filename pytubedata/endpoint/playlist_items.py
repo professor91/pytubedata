@@ -54,4 +54,4 @@ class PlaylistItems:
 
         response: dict = self.api_request.make_request(PlaylistItems.ENDPOINT, params=params)
 
-        return [PlaylistItem(item) for item in response["items"]]
+        return [PlaylistItem(item, self.api_request) for item in response["items"]]
