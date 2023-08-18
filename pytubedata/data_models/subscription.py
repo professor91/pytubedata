@@ -21,7 +21,7 @@ class SubscriptionData:
 
     @property
     def channel_id(self) -> str:
-        return self._data['snippet']['channelId']
+        return self._data['snippet']['resourceId']['channelId']
 
     @property
     def channel_title(self) -> str:
