@@ -11,6 +11,7 @@ from pytubedata.endpoint.channels import Channels
 from pytubedata.endpoint.comment_threads import CommentThreads
 from pytubedata.endpoint.comments import Comments
 from pytubedata.endpoint.playlists import Playlists
+from pytubedata.endpoint.playlist_items import PlaylistItems
 from pytubedata.endpoint.subscriptions import Subscriptions
 from pytubedata.endpoint.videos import Videos
 # Import other endpoint classes as needed.
@@ -50,43 +51,48 @@ class YouTubeDataAPIWrapper:
         get_video(video_id: Union[str, list]) -> VideoData or list[VideoData]:
             Fetch details for a specific YouTube video by its ID or multiple videos at once.
     """
-    def __init__(self, api_key: str):
-        self.api_request = APIRequest(api_key)
+    def __init__(self, api_key: str, access_token: str = None):
+        self.api_request = APIRequest(api_key, access_token=access_token)
         self.channels = Channels(self.api_request)
         self.comment_threads = CommentThreads(self.api_request)
         self.comments = Comments(self.api_request)
         self.playlists = Playlists(self.api_request)
+        self.playlist_items = PlaylistItems(self.api_request)
         self.subscriptions = Subscriptions(self.api_request)
         self.videos = Videos(self.api_request)
         # Initialize other endpoint classes if required.
 
-    def get_channel(self, channel_id: Union[str, list]):
-        return self.channels.get_channel_by_id(channel_ids=channel_id)
+    def get_channel(self, channel_id: Union[str, list], **kwargs):
+        return self.channels.get_channel_by_id(channel_ids=channel_id, **kwargs)
 
-    def get_comment_thread(self, comment_thread_id: Union[str, list]):
-        return self.comment_threads.get_comment_thread_by_id(comment_thread_ids=comment_thread_id)
+    def get_comment_thread(self, comment_thread_id: Union[str, list], **kwargs):
+        return self.comment_threads.get_comment_thread_by_id(comment_thread_ids=comment_thread_id, **kwargs)
 
-    def get_videos_comment_threads(self, video_id: str):
-        return self.comment_threads.get_video_comment_threads(video_id=video_id)
+    def get_videos_comment_threads(self, video_id: str, **kwargs):
+        return self.comment_threads.get_video_comment_threads(video_id=video_id, **kwargs)
 
-    def get_comments(self, commend_id: Union[str, list]):
-        return self.comments.get_comments(comment_ids=commend_id)
+    def get_comments(self, commend_id: Union[str, list], **kwargs):
+        return self.comments.get_comments(comment_ids=commend_id, **kwargs)
 
-    def get_comment_replies(self, parent_comment_id: str):
-        return self.comments.get_replies(parent_comment_id=parent_comment_id)
+    def get_comment_replies(self, parent_comment_id: str, **kwargs):
+        return self.comments.get_replies(parent_comment_id=parent_comment_id, **kwargs)
 
-    def get_playlist(self, playlist_id: Union[str, list]):
-        return self.playlists.get_playlist_details(playlist_ids=playlist_id)
+    def get_playlist(self, playlist_id: Union[str, list], **kwargs):
+        return self.playlists.get_playlist_details(playlist_ids=playlist_id, **kwargs)
 
-    def get_channel_playlists(self, channel_id: str):
-        return self.playlists.get_playlists_by_channel(channel_id=channel_id)
+    def get_channel_playlists(self, channel_id: str, **kwargs):
+        return self.playlists.get_playlists_by_channel(channel_id=channel_id, **kwargs)
 
-    def get_subscriptions(self):
-        return self.subscriptions.get_subscriptions()
+    def get_playlist_videos(self, playlist_id: str, **kwargs):
+        return self.playlist_items.get_playlist_items(playlist_id=playlist_id, **kwargs)
 
-    def get_video(self, video_id: Union[str, list]):
-        return self.videos.get_video_details(video_ids=video_id)
+    def get_subscriptions(self, **kwargs):
+        return self.subscriptions.get_subscriptions(**kwargs)
 
-    def get_popular_videos(self, region_code: str = "IN"):
-        return self.videos.get_popular_videos(region_code=region_code)
+    def get_video(self, video_id: Union[str, list], **kwargs):
+        return self.videos.get_video_details(video_ids=video_id, **kwargs)
+
+    def get_popular_videos(self, region_code: str = "IN", **kwargs):
+        return self.videos.get_popular_videos(region_code=region_code, **kwargs)
+
     # Define other public functions for different endpoints as needed.

@@ -22,7 +22,7 @@ class Channels:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_channel_by_id(channel_ids: Union[str, list]) -> Union[ChannelData, list[ChannelData]]:
+        get_channel_by_id(channel_ids: Union[str, list], **kwargs) -> Union[ChannelData, list[ChannelData]]:
             Get details for a specific YouTube channel by its ID or fetch multiple channels at once.
 
         get_channel_by_username(username: str) -> ChannelData:
@@ -42,13 +42,15 @@ class Channels:
         """
         self.api_request = api_request
 
-    def get_channel_by_id(self, channel_ids: Union[str, list]) -> Union[Channel, list[Channel]]:
+    def get_channel_by_id(self, channel_ids: Union[str, list], **kwargs) -> Union[Channel, list[Channel]]:
         """
         Get details for a specific YouTube channel by its ID or fetch multiple channels at once.
 
         Args:
             channel_ids (Union[str, list]): The ID(s) of the YouTube channel(s) to fetch.
                                             Can be a single ID or a list of IDs.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             Union[Channel, list[ChannelData]]: A single ChannelData object if a single channel is fetched,
@@ -61,6 +63,7 @@ class Channels:
             "part": ENDPOINT_CHANNEL_PARAM_PART,
             "id": channel_ids,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Channels.ENDPOINT, params=params)
 

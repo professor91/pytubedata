@@ -31,6 +31,8 @@ class APIRequest:
     Raises:
         UnauthorizedException: If the API key is invalid or missing.
         Exception: If the API request fails with a status code other than 200.
+
+    TODO: handle rate limiting errors
     """
     BASE_URL = "https://www.googleapis.com/youtube/v3/"
 
@@ -43,11 +45,9 @@ class APIRequest:
                             You can get one from [Google Cloud Console](https://console.cloud.google.com/apis/dashboard).
             access_token (str, optional): An OAuth2 access token for authorized requests. Defaults to None.
             **kwargs: Additional keyword arguments.
-                max_results (int, optional): The maximum number of results to fetch (default is MAX_RESULTS from config).
         """
         self.api_key = api_key
         self.access_token = access_token
-        self.max_results: int = kwargs.get('max_results', MAX_RESULTS)
 
     def make_request(self, endpoint: str, params: dict = None, authorize: bool = False) -> dict:
         """
@@ -66,6 +66,13 @@ class APIRequest:
         """
         url = APIRequest.BASE_URL + endpoint
         params = params or {}
+        """
+        maxResults param in API params defines results per page -> range(0,50)
+
+        self.max_results attribute tells client how many items to fetch
+            it will decide if need to make additional requests using nextPageToken 
+        """
+
         params["key"] = self.api_key
         headers = {'Authorization': f'Bearer {self.access_token}'} if authorize else None
 
@@ -89,6 +96,7 @@ class APIRequest:
 
         Note: This function makes the actual api requests.
         """
+        max_results = params.get('maxResults', MAX_RESULTS)
         all_data = []
 
         while True:
@@ -101,7 +109,7 @@ class APIRequest:
 
             next_page_token = response_data.get("nextPageToken")
 
-            if len(all_data)+5 > self.max_results:
+            if len(all_data)+5 > max_results:
                 """
                 Stop fetching more pages when the desired maximum number of results is reached.
                 The YouTube Data API returns 5 results per page.
@@ -113,7 +121,8 @@ class APIRequest:
 
             params["pageToken"] = next_page_token
 
-        return all_data
+        # TODO: can it cause memory overhead later on?
+        return all_data[:max_results]
 
     @staticmethod
     def handle_errors(status_code: int):

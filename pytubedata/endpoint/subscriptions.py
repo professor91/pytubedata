@@ -22,7 +22,7 @@ class Subscriptions:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_subscriptions() -> Union[SubscriptionData, list[SubscriptionData]]:
+        get_subscriptions(**kwargs) -> Union[SubscriptionData, list[SubscriptionData]]:
             Get the user's subscriptions
 
     Raises:
@@ -41,9 +41,12 @@ class Subscriptions:
         """
         self.api_request = api_request
 
-    def get_subscriptions(self) -> Union[Subscription, list[Subscription]]:
+    def get_subscriptions(self, **kwargs) -> Union[Subscription, list[Subscription]]:
         """
         Get the user's subscriptions
+
+        Args:
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             Union[Subscription, list[SubscriptionData]]: A single SubscriptionData object if a single subscriber is found,
@@ -56,6 +59,7 @@ class Subscriptions:
             'part': ENDPOINT_SUBSCRIPTION_PARAM_PART,
             'mine': True,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Subscriptions.ENDPOINT, params=params, authorize=True)
 

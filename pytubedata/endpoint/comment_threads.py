@@ -22,10 +22,10 @@ class CommentThreads:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_video_comment_threads(video_id: str) -> list[CommentThreadData]:
+        get_video_comment_threads(video_id: str, **kwargs) -> list[CommentThreadData]:
             Get all comments from a specific YouTube video by its ID.
 
-        get_channel_comment_threads(channel_id: str) -> list[CommentThreadData]:
+        get_channel_comment_threads(channel_id: str, **kwargs) -> list[CommentThreadData]:
             Get all comments for a specific YouTube channel by its ID.
 
     Raises:
@@ -42,13 +42,15 @@ class CommentThreads:
         """
         self.api_request = api_request
 
-    def get_comment_thread_by_id(self, comment_thread_ids: Union[str, list]) -> Union[CommentThread, list[CommentThread]]:
+    def get_comment_thread_by_id(self, comment_thread_ids: Union[str, list], **kwargs) -> Union[CommentThread, list[CommentThread]]:
         """
         Get details for a specific YouTube comment by its ID or fetch multiple comments at once.
 
         Args:
             comment_thread_ids (Union[str, list]): The ID(s) of the YouTube comments thread(s) to fetch.
                                                     Can be a single ID or a list of IDs.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             Union[CommentThread, list[CommentThreadData]]: A single CommentThreadData object if a single comment thread is fetched,
@@ -61,6 +63,7 @@ class CommentThreads:
             'part': ENDPOINT_COMMENT_THREAD_PARAM_PART,
             'id': comment_thread_ids
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(CommentThreads.ENDPOINT, params=params)
 
@@ -72,12 +75,14 @@ class CommentThreads:
         else:
             raise ValueError(f"Comment Thread with ID '{comment_thread_ids}' not found.")
 
-    def get_video_comment_threads(self, video_id: str) -> list[CommentThread]:
+    def get_video_comment_threads(self, video_id: str, **kwargs) -> list[CommentThread]:
         """
         Get all comments from a specific YouTube video by its ID.
 
         Args:
             video_id (str): The ID of the YouTube video for which comments to be fetched.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             list[CommentThread]: A list of CommentThreadData objects.
@@ -89,6 +94,7 @@ class CommentThreads:
             'part': ENDPOINT_COMMENT_THREAD_PARAM_PART,
             'videoId': video_id,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(CommentThreads.ENDPOINT, params=params)
 

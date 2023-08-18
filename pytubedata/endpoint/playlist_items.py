@@ -20,7 +20,7 @@ class PlaylistItems:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_playlists_by_channel(channel_id: str, max_results: int = MAX_RESULTS) -> list:
+        get_playlists_by_channel(channel_id: str, **kwargs) -> list:
             Get playlists of a specific channel.
 
     Raises:
@@ -37,12 +37,14 @@ class PlaylistItems:
         """
         self.api_request = api_request
 
-    def get_playlist_items(self, playlist_id: str) -> list[PlaylistItem]:
+    def get_playlist_items(self, playlist_id: str, **kwargs) -> list[PlaylistItem]:
         """
         Get videos of a playlist given its id.
 
         Args:
             playlist_id (str): The id of the YouTube playlist which videos to fetch.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             list: The list of PlaylistData object containing the details of the fetched playlists.
@@ -51,6 +53,7 @@ class PlaylistItems:
             "part": ENDPOINT_PLAYLIST_ITEM_PARAM_PART,
             "playlistId": playlist_id,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(PlaylistItems.ENDPOINT, params=params)
 

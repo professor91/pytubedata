@@ -22,10 +22,10 @@ class Playlists:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_playlist_details(playlist_ids: Union[str, list]) -> Union[PlaylistData, list[PlaylistData]]:
+        get_playlist_details(playlist_ids: Union[str, list], **kwargs) -> Union[PlaylistData, list[PlaylistData]]:
             Get details for a specific YouTube playlist by its ID or fetch multiple playlists at once.
 
-        get_playlists_by_channel(channel_id: str, max_results: int = MAX_RESULTS) -> list:
+        get_playlists_by_channel(channel_id: str, **kwargs) -> list:
             Get playlists of a specific channel.
 
     Raises:
@@ -42,13 +42,15 @@ class Playlists:
         """
         self.api_request = api_request
 
-    def get_playlist_details(self, playlist_ids: Union[str, list]) -> Union[Playlist, list[Playlist]]:
+    def get_playlist_details(self, playlist_ids: Union[str, list], **kwargs) -> Union[Playlist, list[Playlist]]:
         """
         Get details for a specific YouTube playlist by its ID or fetch multiple playlists at once.
 
         Args:
             playlist_ids (Union[str, list]): The ID(s) of the YouTube playlist(s) to fetch.
                                             Can be a single ID or a list of IDs.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             Union[Playlist, list[PlaylistData]]: A single PlaylistData object if a single playlist is fetched,
@@ -61,6 +63,7 @@ class Playlists:
             "part": ENDPOINT_PLAYLIST_PARAM_PART,
             "id": playlist_ids,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Playlists.ENDPOINT, params=params)
 
@@ -72,13 +75,14 @@ class Playlists:
         else:
             raise ValueError(f'Playlist with ID {playlist_ids} not found.')
 
-    def get_playlists_by_channel(self, channel_id: str, max_results: int = MAX_RESULTS) -> list[Playlist]:
+    def get_playlists_by_channel(self, channel_id: str, **kwargs) -> list[Playlist]:
         """
         Get playlists of a channel given its id.
 
         Args:
             channel_id (str): The id of the YouTube channel which playlists to fetch.
-            max_results (int): max number of results to fetch in request
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             list: The list of PlaylistData object containing the details of the fetched playlists.
@@ -88,8 +92,8 @@ class Playlists:
         params = {
             "part": ENDPOINT_PLAYLIST_PARAM_PART,
             "channelId": channel_id,
-            "maxResults": max_results,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Playlists.ENDPOINT, params=params)
 

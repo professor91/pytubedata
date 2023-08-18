@@ -23,13 +23,13 @@ class Videos:
         ENDPOINT (str): The endpoint name of YouTube data api.
 
     Methods:
-        get_video_details(video_ids: Union[str, list]) -> Union[VideoData, list[VideoData]]:
+        get_video_details(video_ids: Union[str, list], **kwargs) -> Union[VideoData, list[VideoData]]:
             Get details for a specific YouTube video by its ID or fetch multiple playlists at once.
 
-        get_popular_videos(region_code: str = "IN", max_results: int = MAX_RESULTS) -> list:
+        get_popular_videos(region_code: str = "IN", **kwargs) -> list:
             Get a list of popular videos in the given region.
 
-        get_my_liked_videos(self, rating: str) -> list:
+        get_my_liked_videos(self, rating: str, **kwargs) -> list:
             Get the list of videos liked/disliked by the authenticated user.
 
     Raises:
@@ -46,13 +46,15 @@ class Videos:
         """
         self.api_request = api_request
 
-    def get_video_details(self, video_ids: Union[str, list]) -> Union[Video, list[Video]]:
+    def get_video_details(self, video_ids: Union[str, list], **kwargs) -> Union[Video, list[Video]]:
         """
         Get details for a specific YouTube video by its ID or fetch multiple videos at once.
 
         Args:
             video_ids (Union[str, list]): The ID(s) of the YouTube video(s) to fetch.
                                             Can be a single ID or a list of IDs.
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             Union[Video, list[VideoData]]: A single VideoData object if a single video is fetched,
@@ -68,6 +70,7 @@ class Videos:
             "part": ENDPOINT_VIDEO_PARAM_PART,
             "id": video_ids,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
 
@@ -79,13 +82,14 @@ class Videos:
         else:
             raise ValueError(f"Video with ID '{video_ids}' not found.")
 
-    def get_popular_videos(self, region_code: str = "IN", max_results: int = MAX_RESULTS) -> list:
+    def get_popular_videos(self, region_code: str = "IN", **kwargs) -> list:
         """
         Get a list of popular videos in the given region.
 
         Args:
             region_code (str, optional): The id of the YouTube channel which playlists to fetch. Defaults to IN.
-            max_results (int, optional): max number of results to fetch in request (defaults to MAX_RESULTS from config).
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             list: The list of VideoData object containing the details of the fetched videos.
@@ -97,8 +101,8 @@ class Videos:
             "part": ENDPOINT_VIDEO_PARAM_PART,
             "chart": 'mostPopular',
             "regionCode": region_code,
-            "maxResults": max_results,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
 
@@ -107,12 +111,14 @@ class Videos:
         else:
             raise ValueError(f'Popular videos from region {region_code} not found.')
 
-    def get_rated_videos(self, rating: str) -> list:
+    def get_rated_videos(self, rating: str, **kwargs) -> list:
         """
         Get the list of videos liked/disliked by the authenticated user.
 
         Args:
             rating (str): Takes only two values `liked` or `disliked`
+
+            kwargs: Check the official documentation for additional parameter to customize the request
 
         Returns:
             list: The list of VideoData object containing the details of the fetched videos.
@@ -124,6 +130,7 @@ class Videos:
             "part": ENDPOINT_VIDEO_PARAM_PART,
             "myRating": rating,
         }
+        params.update(kwargs)
 
         response: dict = self.api_request.make_request(Videos.ENDPOINT, params=params)
 
