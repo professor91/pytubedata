@@ -29,3 +29,5 @@ class Channel(ChannelData):
         return self._playlist_endpoint.get_playlists_by_channel(
             channel_id=self.id
         )
+
+    # TODO: method to get a video (maybe import from video interface class?)

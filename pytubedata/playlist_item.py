@@ -1,5 +1,5 @@
 from pytubedata.data_models.playlist_item import PlaylistItemData
-from pytubedata.endpoint.videos import Videos
+from pytubedata.endpoint.videos import Videos, Video
 
 
 class PlaylistItem(PlaylistItemData):
@@ -10,8 +10,8 @@ class PlaylistItem(PlaylistItemData):
         super().__init__(data)
         self._video_endpoint = Videos(api_request)
 
-    def get_video(self):
+    def get_video(self) -> Video:
         """
         Get the video details
         """
-        self._video_endpoint.get_video_details(self.video_id)
+        return self._video_endpoint.get_video_details(self.video_id)
